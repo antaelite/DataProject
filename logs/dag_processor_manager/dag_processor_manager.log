@@ -1,0 +1,675 @@
+[2025-12-20T22:23:13.543+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T22:23:13.544+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T22:23:13.544+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T22:23:13.545+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T22:23:13.562+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T22:23:13.708+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/accidents_dag.py     93  0.03s             0           0                                                   0
+/opt/airflow/dags/velov_dag.py         92  0.11s             0           0                                                   0
+================================================================================
+[2025-12-20T22:23:43.779+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  1.63s           2025-12-20T22:23:15                      45
+/opt/airflow/dags/accidents_dag.py                           0           1  1.09s           2025-12-20T22:23:14                       3
+================================================================================
+[2025-12-20T22:24:13.782+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py                           0           1  1.26s           2025-12-20T22:23:46                       5
+/opt/airflow/dags/velov_dag.py                               1           0  1.24s           2025-12-20T22:23:47                      12
+================================================================================
+[2025-12-20T22:24:43.951+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  1.69s           2025-12-20T22:24:19                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  1.06s           2025-12-20T22:24:17                       5
+================================================================================
+[2025-12-20T22:25:14.548+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py                           0           1  1.21s           2025-12-20T22:24:49                       5
+/opt/airflow/dags/velov_dag.py                               1           0  1.18s           2025-12-20T22:24:51                      12
+================================================================================
+[2025-12-20T22:25:44.972+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py                           0           1  0.60s           2025-12-20T22:25:20                       5
+/opt/airflow/dags/velov_dag.py                               1           0  0.54s           2025-12-20T22:25:22                      12
+================================================================================
+[2025-12-20T22:26:15.246+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py                           0           1  0.57s           2025-12-20T22:25:51                       5
+/opt/airflow/dags/velov_dag.py                               1           0  0.46s           2025-12-20T22:25:52                      12
+================================================================================
+[2025-12-20T22:26:45.436+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py                           0           1  0.96s           2025-12-20T22:26:22                       5
+/opt/airflow/dags/velov_dag.py                               1           0  0.86s           2025-12-20T22:26:24                      12
+================================================================================
+[2025-12-20T22:27:16.383+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.68s           2025-12-20T22:26:55                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.57s           2025-12-20T22:26:53                       5
+================================================================================
+[2025-12-20T22:27:46.440+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.65s           2025-12-20T22:27:26                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.59s           2025-12-20T22:27:24                       5
+================================================================================
+[2025-12-20T22:28:14.527+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T22:28:14.577+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T22:28:16.695+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py                           0           1  1.23s           2025-12-20T22:27:56                       5
+/opt/airflow/dags/velov_dag.py                               1           0  0.94s           2025-12-20T22:27:57                      12
+================================================================================
+[2025-12-20T22:28:47.389+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  1.96s           2025-12-20T22:28:30                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  1.59s           2025-12-20T22:28:27                       5
+================================================================================
+[2025-12-20T22:29:17.779+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.99s           2025-12-20T22:29:01                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.65s           2025-12-20T22:28:59                       5
+================================================================================
+[2025-12-20T22:29:58.669+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T22:29:58.669+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T22:29:58.670+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T22:29:58.671+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T22:29:58.693+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T22:30:04.974+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  2.15s           2025-12-20T22:30:00                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  1.95s           2025-12-20T22:30:00                       5
+================================================================================
+[2025-12-20T22:30:35.862+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.50s           2025-12-20T22:30:31                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.47s           2025-12-20T22:30:31                       5
+================================================================================
+[2025-12-20T22:31:06.689+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.49s           2025-12-20T22:31:02                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.45s           2025-12-20T22:31:02                       5
+================================================================================
+[2025-12-20T22:31:37.289+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.85s           2025-12-20T22:31:34                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.80s           2025-12-20T22:31:34                       5
+================================================================================
+[2025-12-20T22:32:08.203+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.52s           2025-12-20T22:32:05                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.47s           2025-12-20T22:32:05                       5
+================================================================================
+[2025-12-20T22:32:39.066+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.37s           2025-12-20T22:32:36                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.31s           2025-12-20T22:32:36                       5
+================================================================================
+[2025-12-20T22:37:06.013+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T22:37:06.014+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T22:37:06.014+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T22:37:06.015+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T22:37:06.031+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T22:37:22.762+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.66s           2025-12-20T22:37:06                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.60s           2025-12-20T22:37:06                       5
+================================================================================
+[2025-12-20T22:37:53.210+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.29s           2025-12-20T22:37:37                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.28s           2025-12-20T22:37:37                       5
+================================================================================
+[2025-12-20T22:38:13.315+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-20T22:44:02.477+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T22:44:02.478+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T22:44:02.478+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T22:44:02.478+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T22:44:02.487+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T22:44:02.584+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/accidents_dag.py     86  0.01s             0           0                                                   0
+/opt/airflow/dags/velov_dag.py         85  0.07s             0           0                                                   0
+================================================================================
+[2025-12-20T22:44:33.187+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.70s           2025-12-20T22:44:03                      45
+/opt/airflow/dags/accidents_dag.py     95  0.00s             0           1  0.47s           2025-12-20T22:44:03                       3
+================================================================================
+[2025-12-20T22:45:03.790+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py    106  0.01s             0           1  0.27s           2025-12-20T22:44:33                       5
+/opt/airflow/dags/velov_dag.py        105  0.02s             1           0  0.25s           2025-12-20T22:44:33                      12
+================================================================================
+[2025-12-20T22:45:34.748+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        115  0.02s             1           0  0.68s           2025-12-20T22:45:04                      12
+/opt/airflow/dags/accidents_dag.py    116  0.01s             0           1  0.64s           2025-12-20T22:45:04                       5
+================================================================================
+[2025-12-20T22:45:50.904+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-20T22:49:19.981+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T22:49:19.981+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T22:49:19.981+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T22:49:19.982+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T22:49:19.987+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T22:49:20.116+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/accidents_dag.py     89  0.02s             0           0                                                   0
+/opt/airflow/dags/velov_dag.py         87  0.10s             0           0                                                   0
+================================================================================
+[2025-12-20T22:49:50.746+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py         97  0.01s             1           0  0.59s           2025-12-20T22:49:20                      12
+/opt/airflow/dags/accidents_dag.py     98  0.00s             0           1  0.46s           2025-12-20T22:49:20                       5
+================================================================================
+[2025-12-20T22:50:21.490+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        107  0.02s             1           0  0.46s           2025-12-20T22:49:51                      12
+/opt/airflow/dags/accidents_dag.py    108  0.00s             0           1  0.43s           2025-12-20T22:49:51                       5
+================================================================================
+[2025-12-20T22:50:52.240+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        117  0.03s             1           0  0.45s           2025-12-20T22:50:21                      12
+/opt/airflow/dags/accidents_dag.py    118  0.00s             0           1  0.42s           2025-12-20T22:50:21                       5
+================================================================================
+[2025-12-20T22:51:22.930+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        127  0.01s             1           0  0.45s           2025-12-20T22:50:52                      12
+/opt/airflow/dags/accidents_dag.py    128  0.00s             0           1  0.41s           2025-12-20T22:50:52                       5
+================================================================================
+[2025-12-20T22:51:53.598+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        137  0.01s             1           0  0.36s           2025-12-20T22:51:23                      12
+/opt/airflow/dags/accidents_dag.py    138  0.00s             0           1  0.34s           2025-12-20T22:51:23                       5
+================================================================================
+[2025-12-20T22:52:24.274+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        153  0.01s             1           0  0.34s           2025-12-20T22:51:53                      12
+/opt/airflow/dags/accidents_dag.py    154  0.00s             0           1  0.31s           2025-12-20T22:51:53                       5
+================================================================================
+[2025-12-20T22:52:35.892+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-20T22:58:05.469+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T22:58:05.471+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T22:58:05.474+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T22:58:05.474+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T22:58:05.495+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T22:58:05.649+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/accidents_dag.py     88  0.02s             0           0                                                   0
+/opt/airflow/dags/velov_dag.py         86  0.11s             0           0                                                   0
+================================================================================
+[2025-12-20T22:58:36.206+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py         96  0.01s             1           0  0.64s           2025-12-20T22:58:06                      45
+/opt/airflow/dags/accidents_dag.py     97  0.00s             0           1  0.38s           2025-12-20T22:58:06                       3
+================================================================================
+[2025-12-20T22:59:06.863+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        106  0.01s             1           0  0.39s           2025-12-20T22:58:36                      12
+/opt/airflow/dags/accidents_dag.py    107  0.00s             0           1  0.36s           2025-12-20T22:58:36                       5
+================================================================================
+[2025-12-20T22:59:37.559+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        116  0.02s             1           0  0.37s           2025-12-20T22:59:07                      12
+/opt/airflow/dags/accidents_dag.py    117  0.00s             0           1  0.35s           2025-12-20T22:59:07                       5
+================================================================================
+[2025-12-20T23:00:08.410+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        126  0.02s             1           0  0.51s           2025-12-20T22:59:38                      12
+/opt/airflow/dags/accidents_dag.py    127  0.01s             0           1  0.47s           2025-12-20T22:59:38                       5
+================================================================================
+[2025-12-20T23:00:39.277+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        136  0.01s             1           0  0.57s           2025-12-20T23:00:08                      12
+/opt/airflow/dags/accidents_dag.py    137  0.00s             0           1  0.53s           2025-12-20T23:00:08                       5
+================================================================================
+[2025-12-20T23:01:10.087+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        146  0.02s             1           0  0.49s           2025-12-20T23:00:39                      12
+/opt/airflow/dags/accidents_dag.py    147  0.01s             0           1  0.46s           2025-12-20T23:00:39                       5
+================================================================================
+[2025-12-20T23:01:40.963+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        162  0.02s             1           0  0.54s           2025-12-20T23:01:10                      12
+/opt/airflow/dags/accidents_dag.py    163  0.01s             0           1  0.51s           2025-12-20T23:01:10                       5
+================================================================================
+[2025-12-20T23:02:11.913+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        172  0.02s             1           0  0.59s           2025-12-20T23:01:41                      12
+/opt/airflow/dags/accidents_dag.py    173  0.01s             0           1  0.56s           2025-12-20T23:01:41                       5
+================================================================================
+[2025-12-20T23:02:42.732+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        182  0.02s             1           0  0.51s           2025-12-20T23:02:12                      12
+/opt/airflow/dags/accidents_dag.py    183  0.00s             0           1  0.48s           2025-12-20T23:02:12                       5
+================================================================================
+[2025-12-20T23:02:47.521+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-20T23:07:25.234+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T23:07:25.235+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T23:07:25.236+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T23:07:25.237+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T23:07:25.245+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T23:07:25.348+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/accidents_dag.py     82  0.01s             0           0                                                   0
+/opt/airflow/dags/velov_dag.py         80  0.08s             0           0                                                   0
+================================================================================
+[2025-12-20T23:07:56.000+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py         90  0.01s             1           0  0.65s           2025-12-20T23:07:25                      45
+/opt/airflow/dags/accidents_dag.py     91  0.00s             0           1  0.40s           2025-12-20T23:07:25                       3
+================================================================================
+[2025-12-20T23:08:26.677+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        100  0.01s             1           0  0.46s           2025-12-20T23:07:56                      12
+/opt/airflow/dags/accidents_dag.py    101  0.01s             0           1  0.43s           2025-12-20T23:07:56                       5
+================================================================================
+[2025-12-20T23:08:57.522+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py        116  0.01s             1           0  0.55s           2025-12-20T23:08:27                      12
+/opt/airflow/dags/accidents_dag.py    117  0.01s             0           1  0.52s           2025-12-20T23:08:27                       5
+================================================================================
+[2025-12-20T23:09:17.748+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-20T23:14:50.305+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T23:14:50.306+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T23:14:50.306+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T23:14:50.306+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T23:14:50.316+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T23:14:50.440+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                             PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/accidents_dag.py     94  0.02s             0           0                                                   0
+/opt/airflow/dags/velov_dag.py         93  0.09s             0           0                                                   0
+================================================================================
+[2025-12-20T23:15:20.481+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  1.02s           2025-12-20T23:14:51                      45
+/opt/airflow/dags/accidents_dag.py                           0           1  0.73s           2025-12-20T23:14:51                       3
+================================================================================
+[2025-12-20T23:15:51.015+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/accidents_dag.py                           0           1  0.47s           2025-12-20T23:15:21                       5
+/opt/airflow/dags/velov_dag.py                               1           0  0.40s           2025-12-20T23:15:21                      12
+================================================================================
+[2025-12-20T23:16:21.706+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.44s           2025-12-20T23:15:52                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.40s           2025-12-20T23:15:52                       5
+================================================================================
+[2025-12-20T23:16:52.498+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.45s           2025-12-20T23:16:23                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.41s           2025-12-20T23:16:23                       5
+================================================================================
+[2025-12-20T23:17:23.341+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.54s           2025-12-20T23:16:54                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.50s           2025-12-20T23:16:54                       5
+================================================================================
+[2025-12-20T23:17:54.170+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.52s           2025-12-20T23:17:24                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.49s           2025-12-20T23:17:24                       5
+================================================================================
+[2025-12-20T23:18:24.926+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.50s           2025-12-20T23:17:55                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.47s           2025-12-20T23:17:55                       5
+================================================================================
+[2025-12-20T23:18:55.731+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.48s           2025-12-20T23:18:26                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.44s           2025-12-20T23:18:26                       5
+================================================================================
+[2025-12-20T23:19:26.503+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.49s           2025-12-20T23:18:57                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.45s           2025-12-20T23:18:57                       5
+================================================================================
+[2025-12-20T23:19:51.005+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T23:19:51.024+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T23:19:57.080+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.28s           2025-12-20T23:19:27                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.23s           2025-12-20T23:19:27                       5
+================================================================================
+[2025-12-20T23:20:27.673+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.28s           2025-12-20T23:19:58                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.24s           2025-12-20T23:19:58                       5
+================================================================================
+[2025-12-20T23:20:58.333+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.34s           2025-12-20T23:20:29                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.31s           2025-12-20T23:20:29                       5
+================================================================================
+[2025-12-20T23:21:28.915+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.34s           2025-12-20T23:20:59                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.30s           2025-12-20T23:20:59                       5
+================================================================================
+[2025-12-20T23:21:59.534+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.39s           2025-12-20T23:21:30                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.31s           2025-12-20T23:21:30                       5
+================================================================================
+[2025-12-20T23:26:18.091+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-20T23:26:18.092+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-20T23:26:18.092+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-20T23:26:18.092+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-20T23:26:18.122+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-20T23:26:33.224+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  1.05s           2025-12-20T23:26:19                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.93s           2025-12-20T23:26:19                       5
+================================================================================
+[2025-12-20T23:27:03.924+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.52s           2025-12-20T23:26:49                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.49s           2025-12-20T23:26:49                       5
+================================================================================
+[2025-12-20T23:27:34.587+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.43s           2025-12-20T23:27:20                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.40s           2025-12-20T23:27:20                       5
+================================================================================
+[2025-12-20T23:28:05.209+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.39s           2025-12-20T23:27:51                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.37s           2025-12-20T23:27:51                       5
+================================================================================
+[2025-12-20T23:28:35.271+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.51s           2025-12-20T23:28:21                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.46s           2025-12-20T23:28:21                       5
+================================================================================
+[2025-12-20T23:29:05.531+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.28s           2025-12-20T23:28:52                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.25s           2025-12-20T23:28:52                       5
+================================================================================
+[2025-12-20T23:29:36.100+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.28s           2025-12-20T23:29:22                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.25s           2025-12-20T23:29:22                       5
+================================================================================
+[2025-12-20T23:30:06.641+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                           PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+----------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/velov_dag.py                               1           0  0.27s           2025-12-20T23:29:53                      12
+/opt/airflow/dags/accidents_dag.py                           0           1  0.24s           2025-12-20T23:29:53                       5
+================================================================================
