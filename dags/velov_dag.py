@@ -41,7 +41,7 @@ def failure_alert(context):
 with DAG(
     dag_id="velov_dag",
     start_date=START_DATE,
-    schedule_interval="0,20,40 * * * *",  # Toutes les 20 mins
+    schedule="*/20 * * * *",  # Toutes les 20 mins
     catchup=False,
     max_active_tasks=1,
     default_args={

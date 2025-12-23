@@ -9,8 +9,7 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
-from wrangling import accidents_cleaning
-
+import libs.wrangling as wranglingLib
 #  Définition du DAG Airflow
 
 logger = logging.getLogger(__name__)  # Airflow captures this per task
@@ -52,7 +51,7 @@ with DAG(
 
     cleaning_task = PythonOperator(
         task_id="clean_accidents",
-        python_callable=accidents_cleaning,
+        python_callable=wranglingLib.accidents_cleaning,
     )
 
     cleaning_task
