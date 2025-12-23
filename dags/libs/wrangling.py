@@ -1,11 +1,6 @@
 import pandas as pd 
 import os
 
-# Configuration des chemins (BASE_DIR à ajuster selon si on est en local ou Docker)
-# En local : os.path.join("..", "..", "data")
-# En Docker : "/opt/airflow/data"
-BASE_DIR = os.path.join("..", "..", "data")
-
 def accidents_cleaning (input_path, output_path):
     """
     Nettoie les données d'accidents.
@@ -81,6 +76,9 @@ def clean_velov_data(input_path, output_path):
 
 if __name__ == "__main__":
     print("Démarrage du script de Wrangling...")
+
+    # Définir BASE_DIR si non fourni (utile pour exécution en local)
+    BASE_DIR = globals().get("BASE_DIR") or os.environ.get("BASE_DIR") or os.getcwd()
 
     # 1. Définir les chemins d'entrée (Landing)
     accidents_raw = os.path.join(BASE_DIR, "landing", "accidentsVelo.csv")

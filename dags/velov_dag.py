@@ -1,6 +1,9 @@
+import airflow
+import datetime
 from airflow import DAG
+
 from airflow.operators.python import PythonOperator
-from airflow.operators.empty import EmptyOperator
+from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
 import pendulum
 import logging
@@ -54,7 +57,12 @@ with DAG(
 ) as dag:
 
     # 1. Start
-    start = EmptyOperator(task_id="start")
+    start = DummyOperator(task_id="start")
+    
+    amadoutest = PythonOperator(
+        task_id="amadou_test_task",
+        python_callable=ingestionLib.amadou_test_function,
+    )
 
     # 2. Ingestion (Landing)
     ingest_task = PythonOperator(
@@ -63,7 +71,9 @@ with DAG(
         op_kwargs={
             "api_url": API_URL, 
             "output_path": RAW_FILE_PATH, # <-- On force le chemin ici
-            "limit": 100
+            "limit": 100,
+            "desired_count": 300,  # Limite par défaut pour éviter de longues exécutions
+            "max_loops": 50        # Safeguard pour arrêter pagination excessive
         },
     )
 
@@ -78,7 +88,7 @@ with DAG(
     )
 
     # 4. End
-    end = EmptyOperator(task_id="end")
+    end = DummyOperator(task_id="end")
 
     # --- ORCHESTRATION (PIPELINE) ---
     start >> ingest_task >> wrangle_task >> end

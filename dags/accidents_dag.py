@@ -5,9 +5,7 @@ import logging
 from datetime import timedelta
 
 from airflow import DAG
-from airflow.operators.python import PythonOperator, BranchPythonOperator
-from airflow.operators.empty import EmptyOperator
-from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+from airflow.operators.python import PythonOperator
 
 import libs.wrangling as wranglingLib
 #  Définition du DAG Airflow

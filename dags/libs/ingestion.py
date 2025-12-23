@@ -1,8 +1,4 @@
-import requests
-import csv
-import os
-
-def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000):
+def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max_loops=100, sleep_seconds=0.5):
     """
     Fetch Vélo'v bike station data and save it to a specific CSV path.
     Args:
@@ -10,7 +6,13 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000):
         api_url (str): URL de l'API (optionnel, sinon utilise la valeur par défaut)
         limit (int): Pagination
         desired_count (int): Nombre max d'éléments à récupérer
+        max_loops (int): Safeguard to avoid infinite pagination loops
+        sleep_seconds (float): Wait between paged requests to avoid rate limits
     """
+    import requests
+    import csv
+    import os
+    import time
 
     output_folder = os.path.dirname(output_path)
     if output_folder: # Si le chemin n'est pas juste "velov.csv"
@@ -22,37 +24,50 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000):
     
     all_data = []
     start_index = 0
+    loops = 0
 
     print(f"Début de l'ingestion vers le fichier : {output_path}...")
     print(f"URL cible : {api_url}")
 
     # Boucle de pagination
-    while len(all_data) < desired_count:
+    while len(all_data) < desired_count and loops < max_loops:
         params = {
             "limit": limit,
             "startIndex": start_index,
             "f": "json"
         }
         try:
-            response = requests.get(api_url, params=params, timeout=10)
+            response = requests.get(api_url, params=params, timeout=15)
             response.raise_for_status()
+            data = response.json()
         except requests.exceptions.RequestException as e:
-            print(f"Erreur API : {e}")
-            break
+            print(f"Erreur réseau/API : {e}")
+            # Propagate so Airflow marks the task as failed and retries according to DAG config
+            raise
+        except ValueError as e:
+            print(f"Réponse non JSON ou décodage échoué : {e}")
+            raise
 
-        data = response.json()
         items = data.get('features', [])
 
         if not items:
+            print("Aucun item renvoyé par l'API, arrêt de la boucle.")
             break
 
         all_data.extend(items)
         print(f"Récupéré : {len(all_data)} stations...")
         
         if len(items) < limit:
+            print("Fin des pages disponibles.")
             break
 
         start_index += limit
+        loops += 1
+        if sleep_seconds:
+            time.sleep(sleep_seconds)
+
+    if loops >= max_loops:
+        print("Arrêt: nombre max d'itérations atteint (max_loops)")
 
     # Écriture du CSV     
     final_data = all_data[:desired_count]
@@ -83,6 +98,10 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000):
     print(f"Ingestion terminée. Fichier sauvegardé dans : {output_path}")
 
     return output_path
+
+def amadou_test_function():
+    print("Fonction de test dans ingestion.py")
+    
 
 if __name__ == "__main__":
     fichier_test_local = "../../data/landing/velov_raw.csv"
