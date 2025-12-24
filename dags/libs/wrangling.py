@@ -1,26 +1,24 @@
 import pandas as pd 
 import os
+import numpy as np
+import math
+
 from pymongo import MongoClient
 
 def accidents_cleaning (input_path, output_path):
     """
     Nettoie les données d'accidents.
-    """
-    print(f"--- Traitement Accidents : {input_path} ---")
 
-    if not os.path.exists(input_path):
-        print(f"SKIPPING: Fichier introuvable {input_path}. Lancer l'ingestion d'abord.")
-        return
-    
+    NOTE: Ce traitement suppose que le fichier d'entrée existe et est valide.
+    Les vérifications d'existence/colonnes doivent être effectuées par des tâches
+    de vérification distinctes (ex: `check_task_status`).
+    """
     output_dir = os.path.dirname(output_path)
     os.makedirs(output_dir, exist_ok=True)
 
-    print("Lecture du fichier brut...")
     df = pd.read_csv(input_path)
     if "dep" in df.columns:
         df = df[df["dep"].astype(str) == "69"]
-    else:
-        print("La colonne 'dep' n'existe pas dans ce dataset ! Vérifie le nom exact.")
 
     df["lat"] = pd.to_numeric(df["lat"], errors="coerce")
     df["long"] = pd.to_numeric(df["long"], errors="coerce")
@@ -37,20 +35,13 @@ def accidents_cleaning (input_path, output_path):
 
     output_path = os.path.join(output_dir, "accidents_clean_lyon.csv")
     df.to_csv(output_path, index=False, encoding="utf-8")
-    print(f" Fichier nettoyé enregistré dans : {output_path}")
-    print(f"Nombre de lignes finales : {len(df)}")
+    print(f"Saved cleaned accidents: {output_path} ({len(df)} rows)")
 
 
 def clean_velov_data(input_path, output_path):
     """
     Nettoie les données Vélo'v.
     """
-    print(f"--- Traitement Vélo'v : {input_path} ---")
-    
-    if not os.path.exists(input_path):
-        print(f"ERREUR : Fichier introuvable {input_path}. Lancer l'ingestion d'abord.")
-        return
-
     df = pd.read_csv(input_path, sep=",") # Vérifie si c'est , ou ;
 
     # 1. Types
@@ -71,20 +62,13 @@ def clean_velov_data(input_path, output_path):
     # 4. Sauvegarde
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     df.to_csv(output_path, index=False)
-    print(f"-> Sauvegardé : {output_path} ({len(df)} stations)")
-
-
-
+    print(f"Saved velov clean: {output_path} ({len(df)} stations)")
 
 def check_task_status(path, min_rows=1, required_cols=None):
     """Vérifie qu'un fichier CSV existe, contient au moins `min_rows` lignes et
     possède les colonnes requises si spécifiées. Lève une exception en cas d'échec
     pour que la tâche Airflow marque l'échec et soit retriée selon la config.
     """
-    import os
-    import pandas as pd
-
-    print(f"Vérification du fichier : {path}")
     if not os.path.exists(path):
         raise FileNotFoundError(f"Fichier introuvable : {path}")
 
@@ -98,7 +82,7 @@ def check_task_status(path, min_rows=1, required_cols=None):
         if missing:
             raise ValueError(f"Colonnes manquantes dans {path}: {missing}")
 
-    print(f"OK: {path} ({row_count} lignes)")
+    print(f"OK: {path} ({row_count} rows)")
     return True
 
 
@@ -121,20 +105,10 @@ def assign_accidents_to_stations(stations_path, accidents_path, output_stations_
     Returns:
         tuple(output_stations_path, output_accidents_path)
     """
-    import numpy as np
-    import math
-    import os
-    if not os.path.exists(stations_path):
-        raise FileNotFoundError(f"Stations file not found: {stations_path}")
-    if not os.path.exists(accidents_path):
-        raise FileNotFoundError(f"Accidents file not found: {accidents_path}")
-
     stations = pd.read_csv(stations_path)
     accidents = pd.read_csv(accidents_path)
     stations = stations.dropna(subset=['lat', 'long']).reset_index(drop=True)
     accidents = accidents.dropna(subset=['lat', 'long']).reset_index(drop=True)
-    if stations.empty:
-        raise ValueError('No stations available after cleaning')
 
     stations_lat = np.radians(stations['lat'].values)
     stations_lng = np.radians(stations['long'].values)
@@ -188,26 +162,36 @@ def assign_accidents_to_stations(stations_path, accidents_path, output_stations_
 
     # Vérification finale : combien d'accidents étaient hors rayon
     n_outside = int((~accidents['within_radius']).sum())
-    if n_outside > 0:
-        print(f"{n_outside} accidents not within radius; assigned to nearest stations' 'deconne'.")
-    else:
-        print("Tous les accidents sont dans un cercle de rayon donné.")
 
-    print(f"Saved stations -> {output_stations_path}")
-    print(f"Saved accidents -> {output_accidents_path}")
+    print(f"Assigned accidents saved: stations={output_stations_path}, accidents={output_accidents_path}, outside={n_outside}")
 
     return output_stations_path, output_accidents_path
 
 
 def _haversine_distance_m(lat1, lon1, lat2_arr, lon2_arr):
-    import numpy as np
-
     dlat = lat2_arr - lat1
     dlon = lon2_arr - lon1
     a = np.sin(dlat/2.0)**2 + np.cos(lat1)*np.cos(lat2_arr)*np.sin(dlon/2.0)**2
     c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1-a))
     R = 6371000.0  # rayon de la Terre en mètres
     return R * c
+
+
+def check_mongo_stations(mongo_uri="mongodb://mongo:27017/", db_name="VelovDB", collection_name="velov_stations", min_count=1):
+    """Vérifie qu'il y a au moins `min_count` documents dans la collection Mongo.
+    Lève une exception si la condition n'est pas satisfaite pour que la task Airflow échoue.
+    """
+    client = MongoClient(mongo_uri, username="admin", password="admin")
+    try:
+        count = client[db_name][collection_name].count_documents({})
+    finally:
+        client.close()
+
+    if count < min_count:
+        raise ValueError(f"Mongo collection {db_name}.{collection_name} has {count} documents < {min_count}")
+
+    print(f"OK: Mongo {db_name}.{collection_name} contains {count} documents")
+    return True
 
 
 def save_stations_data_to_mongodb(csv_path):
@@ -236,10 +220,10 @@ def save_stations_data_to_mongodb(csv_path):
     if records:
         collection.delete_many({})  # optionnel : reset collection
         collection.insert_many(records)
-        print(f"Inséré {len(records)} documents dans {db_name}.{collection_name}")
+        print(f"Inserted {len(records)} documents into {db_name}.{collection_name}")
+        collection.create_index([("location", "2dsphere")])
+        print("Created 2dsphere index on 'location'")
     else:
-        print("Aucun enregistrement à insérer.")
-    collection.create_index([("location", "2dsphere")])
-    print(" Index géospatial 2dsphere créé sur 'location'")
+        print("No records to insert")
 
     client.close()

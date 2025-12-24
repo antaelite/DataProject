@@ -1,8 +1,23 @@
-from neo4j import GraphDatabase
-import libs.wrangling as wranglingLib
-import pandas as pd
-from pymongo import MongoClient
 import numpy as np
+import pandas as pd
+import math
+
+from neo4j import GraphDatabase
+from pymongo import MongoClient
+import logging
+
+import libs.wrangling as wranglingLib
+
+def mongo_to_neo4j_graph(k=5):
+    stations = load_stations_from_mongo()         # depuis Mongo
+    edges = build_station_edges(stations, k=k)    # KNN
+
+    driver = connect_neo4j()
+    create_station_nodes(driver, stations)
+    create_routes(driver, edges)
+    close_neo4j(driver)
+
+    return len(stations), len(edges)
 
 
 def load_stations_from_mongo(
@@ -89,7 +104,6 @@ def build_station_edges(stations_df, k=5, directed=True):
         from scipy.spatial import cKDTree
         use_ckdtree = True
     except ModuleNotFoundError:
-        import logging
         logging.getLogger(__name__).warning("scipy not available; using numpy fallback KNN (slower).")
 
     coords = np.column_stack([stations_df["lat"].to_numpy(), stations_df["long"].to_numpy()])
@@ -112,7 +126,6 @@ def build_station_edges(stations_df, k=5, directed=True):
                 b = stations_df.iloc[int(j)]
 
                 # compute haversine distance using radians for accuracy
-                import math
                 distance_m = wranglingLib._haversine_distance_m(math.radians(a["lat"]), math.radians(a["long"]), np.radians(b["lat"]), np.radians(b["long"]))
                 risk = (float(a.get("accident_count_nearby", 0)) + float(b.get("accident_count_nearby", 0))) / 2.0
                 risk_per_km = risk / max(distance_m / 1000.0, 1e-6)
@@ -169,17 +182,29 @@ def build_station_edges(stations_df, k=5, directed=True):
 
     return edges
 
-     
-def mongo_to_neo4j_graph(k=5):
-    stations = load_stations_from_mongo()         # depuis Mongo
-    edges = build_station_edges(stations, k=k)    # KNN
 
-    driver = connect_neo4j()
-    create_station_nodes(driver, stations)
-    create_routes(driver, edges)
-    close_neo4j(driver)
+def check_neo4j_graph(driver_uri="bolt://neo4j:7687", user="neo4j", pwd="adminPass", min_nodes=1, min_edges=1):
+    """
+    Vérifie qu'il y a au moins `min_nodes` noeuds :Station et `min_edges` relations :ROUTE.
+    Lève une exception si condition non satisfaite pour que la task Airflow échoue.
+    """
+    driver = connect_neo4j(uri=driver_uri, user=user, pwd=pwd)
+    try:
+        nodes_res = run_query(driver, "MATCH (s:Station) RETURN count(s) AS cnt")
+        edges_res = run_query(driver, "MATCH ()-[r:ROUTE]->() RETURN count(r) AS cnt")
+    finally:
+        close_neo4j(driver)
 
-    return len(stations), len(edges)
+    nodes = int(nodes_res[0].get("cnt", 0)) if nodes_res else 0
+    edges = int(edges_res[0].get("cnt", 0)) if edges_res else 0
+
+    if nodes < min_nodes:
+        raise ValueError(f"Neo4j contains {nodes} Station nodes < {min_nodes}")
+    if edges < min_edges:
+        raise ValueError(f"Neo4j contains {edges} ROUTE relationships < {min_edges}")
+
+    print(f"OK: Neo4j has {nodes} Station nodes and {edges} ROUTE relations")
+    return {"nodes": nodes, "edges": edges}
 
 
 def clear_database(driver):

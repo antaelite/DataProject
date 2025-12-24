@@ -156,7 +156,7 @@ services:
     restart: always
 
   neo4j:
-    image: neo4j:5
+    image: neo4j:latest
     ports:
       - "7474:7474"
       - "7687:7687"

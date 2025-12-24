@@ -92,12 +92,6 @@ cleaning_accidents_data = PythonOperator(
     },
 )
 
-    # 4. End
-end = DummyOperator(
-    task_id="end",
-    dag=velov_dag
-)
-
 # --- ORCHESTRATION (PIPELINE) ---
 # Validation tasks (ingestion & wrangling)
 check_ingestion_task = PythonOperator(
@@ -150,17 +144,76 @@ mongo_to_neo4j_graph_task = PythonOperator(
     python_callable=productionLib.mongo_to_neo4j_graph,
     op_kwargs={"k": 5}
 )
-    
 
-# Velov pipeline: ingest -> validate raw -> clean -> validate clean
+check_neo4j_graph_task = PythonOperator(
+    task_id="check_neo4j_graph",
+    dag=velov_dag,
+    python_callable=productionLib.check_neo4j_graph,
+    op_kwargs={
+        "min_nodes": 1,
+        "min_edges": 1,
+    },
+)
+
+check_accidents_input_task = PythonOperator(
+    task_id="check_accidents_input",
+    dag=velov_dag,
+    python_callable=wranglingLib.check_task_status,
+    op_kwargs={
+        "path": os.path.join(BASE_DIR, "landing", "accidentsVelo.csv"),
+        "min_rows": 1,
+        "required_cols": ["Num_Acc", "lat", "long"],
+    },
+)
+
+# Verification tasks for assignment outputs
+check_assigned_stations_task = PythonOperator(
+    task_id="check_assigned_stations",
+    dag=velov_dag,
+    python_callable=wranglingLib.check_task_status,
+    op_kwargs={
+        "path": os.path.join(BASE_DIR, "staging", "velov_stations_with_accident_counts.csv"),
+        "min_rows": 1,
+        "required_cols": ["station_id", "accident_count_nearby"],
+    },
+)
+
+check_assigned_accidents_task = PythonOperator(
+    task_id="check_assigned_accidents",
+    dag=velov_dag,
+    python_callable=wranglingLib.check_task_status,
+    op_kwargs={
+        "path": os.path.join(BASE_DIR, "staging", "accidents_assigned.csv"),
+        "min_rows": 1,
+        "required_cols": ["Num_Acc", "assigned_station_id", "distance_m"],
+    },
+)
+
+# Verify Mongo insert before building Neo4j graph
+check_mongo_stations_task = PythonOperator(
+    task_id="check_mongo_stations",
+    dag=velov_dag,
+    python_callable=wranglingLib.check_mongo_stations,
+)
+
+# 4. End
+end = DummyOperator(
+    task_id="end",
+    dag=velov_dag
+)
+
+
 start >> ingest_velov_station_data_task >> check_ingestion_task >> cleaning_velov_station_task >> check_wrangling_task
+start >> check_accidents_input_task >> cleaning_accidents_data >> check_accidents_task
 
-# Accidents pipeline: start -> clean -> validate -> end
-start >> cleaning_accidents_data >> check_accidents_task
-
-
-
-# run assign after both checks are done
+# Run assignment after both checks are done
 check_wrangling_task >> assign_accidents_task
 check_accidents_task >> assign_accidents_task
-assign_accidents_task >> save_station_data_to_mongo_task >> mongo_to_neo4j_graph_task >> end
+
+# Ensure assignment produced expected CSVs before saving to Mongo
+assign_accidents_task >> check_assigned_stations_task
+assign_accidents_task >> check_assigned_accidents_task
+check_assigned_stations_task >> save_station_data_to_mongo_task
+check_assigned_accidents_task >> save_station_data_to_mongo_task
+
+save_station_data_to_mongo_task >> check_mongo_stations_task >> mongo_to_neo4j_graph_task >> check_neo4j_graph_task >> end

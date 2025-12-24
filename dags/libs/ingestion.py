@@ -1,3 +1,8 @@
+import requests
+import csv
+import os
+import time
+
 def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max_loops=100, sleep_seconds=0.5):
     """
     Fetch Vélo'v bike station data and save it to a specific CSV path.
@@ -9,11 +14,6 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max
         max_loops (int): Safeguard to avoid infinite pagination loops
         sleep_seconds (float): Wait between paged requests to avoid rate limits
     """
-    import requests
-    import csv
-    import os
-    import time
-
     output_folder = os.path.dirname(output_path)
     if output_folder: # Si le chemin n'est pas juste "velov.csv"
         os.makedirs(output_folder, exist_ok=True)
