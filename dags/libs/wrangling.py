@@ -1,5 +1,6 @@
 import pandas as pd 
 import os
+from pymongo import MongoClient
 
 def accidents_cleaning (input_path, output_path):
     """
@@ -54,11 +55,11 @@ def clean_velov_data(input_path, output_path):
 
     # 1. Types
     df['lat'] = pd.to_numeric(df['lat'], errors='coerce')
-    df['lng'] = pd.to_numeric(df['lng'], errors='coerce')
+    df['long'] = pd.to_numeric(df['long'], errors='coerce')
     df['available_bikes'] = pd.to_numeric(df['available_bikes'], errors='coerce').fillna(0).astype(int)
     
     # 2. Filtres
-    df = df.dropna(subset=['lat', 'lng'])
+    df = df.dropna(subset=['lat', 'long'])
     
     if 'status' in df.columns:
         df = df[df['status'] == 'OPEN']
@@ -74,30 +75,171 @@ def clean_velov_data(input_path, output_path):
 
 
 
-if __name__ == "__main__":
-    print("Démarrage du script de Wrangling...")
 
-    # Définir BASE_DIR si non fourni (utile pour exécution en local)
-    BASE_DIR = globals().get("BASE_DIR") or os.environ.get("BASE_DIR") or os.getcwd()
+def check_task_status(path, min_rows=1, required_cols=None):
+    """Vérifie qu'un fichier CSV existe, contient au moins `min_rows` lignes et
+    possède les colonnes requises si spécifiées. Lève une exception en cas d'échec
+    pour que la tâche Airflow marque l'échec et soit retriée selon la config.
+    """
+    import os
+    import pandas as pd
 
-    # 1. Définir les chemins d'entrée (Landing)
-    accidents_raw = os.path.join(BASE_DIR, "landing", "accidentsVelo.csv")
-    velov_raw = os.path.join(BASE_DIR, "landing", "velov_raw.csv")
+    print(f"Vérification du fichier : {path}")
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Fichier introuvable : {path}")
 
-    # 2. Définir les chemins de sortie (Staging)
-    accidents_clean_path = os.path.join(BASE_DIR, "staging", "accidents_clean_lyon.csv")
-    velov_clean_path = os.path.join(BASE_DIR, "staging", "velov_clean.csv")
+    df = pd.read_csv(path)
+    row_count = len(df)
+    if row_count < min_rows:
+        raise ValueError(f"Trop peu de lignes dans {path}: {row_count} < {min_rows}")
 
-    # 3. Exécuter les fonctions séquentiellement
-    # On gère les exceptions pour qu'une erreur sur l'un ne bloque pas forcément l'autre
-    try:
-        accidents_cleaning(accidents_raw, accidents_clean_path)
-    except Exception as e:
-        print(f"Erreur sur Accidents: {e}")
+    if required_cols:
+        missing = [c for c in required_cols if c not in df.columns]
+        if missing:
+            raise ValueError(f"Colonnes manquantes dans {path}: {missing}")
 
-    try:
-        clean_velov_data(velov_raw, velov_clean_path)
-    except Exception as e:
-        print(f"Erreur sur Vélo'v: {e}")
+    print(f"OK: {path} ({row_count} lignes)")
+    return True
 
-    print("Fin du Wrangling.")
+
+def assign_accidents_to_stations(stations_path, accidents_path, output_stations_path=None, output_accidents_path=None, radius_m=500, station_id_col="station_id"):
+    """Assigne chaque accident à la station la plus proche.
+
+    - Compte le nombre d'accidents situés à moins de `radius_m` mètres d'une station
+      et ajoute la colonne `accident_count_nearby` au CSV des stations.
+    - Pour les accidents qui ne sont dans le rayon d'aucune station, on les assigne
+      quand même à la station la plus proche et on marque `within_radius=False`.
+
+    Args:
+        stations_path (str): Chemin CSV stations avec colonnes lat/lng.
+        accidents_path (str): Chemin CSV accidents avec colonnes lat/long (ou lng).
+        output_stations_path (str): Chemin de sortie pour le CSV stations enrichi.
+        output_accidents_path (str): Chemin de sortie pour le CSV accidents assignés.
+        radius_m (int): Rayon en mètres pour considérer un accident "proche".
+        station_id_col (str): Nom de la colonne identifiant la station.
+
+    Returns:
+        tuple(output_stations_path, output_accidents_path)
+    """
+    import numpy as np
+    import math
+    import os
+    if not os.path.exists(stations_path):
+        raise FileNotFoundError(f"Stations file not found: {stations_path}")
+    if not os.path.exists(accidents_path):
+        raise FileNotFoundError(f"Accidents file not found: {accidents_path}")
+
+    stations = pd.read_csv(stations_path)
+    accidents = pd.read_csv(accidents_path)
+    stations = stations.dropna(subset=['lat', 'long']).reset_index(drop=True)
+    accidents = accidents.dropna(subset=['lat', 'long']).reset_index(drop=True)
+    if stations.empty:
+        raise ValueError('No stations available after cleaning')
+
+    stations_lat = np.radians(stations['lat'].values)
+    stations_lng = np.radians(stations['long'].values)
+
+    # Préparer des listes pour stocker les résultats d'assignation
+    assigned_station_ids = []  # id de la station la plus proche pour chaque accident
+    assigned_distances = []    # distance en mètres à cette station
+    within_radius_flags = []   # bool si distance <= radius_m
+
+    # Boucle sur chaque accident pour trouver la station la plus proche
+    for idx, acc in accidents.iterrows():
+        lat_rad = math.radians(acc['lat'])
+        lng_rad = math.radians(acc['long'])
+        
+        dists = _haversine_distance_m(lat_rad, lng_rad, stations_lat, stations_lng)
+        # index de la station la plus proche
+        nearest_idx = int(np.argmin(dists))
+        nearest_dist = float(dists[nearest_idx])
+        assigned_station_id = stations.iloc[nearest_idx].get(station_id_col, nearest_idx)
+
+        # stocker les résultats
+        assigned_station_ids.append(assigned_station_id)
+        assigned_distances.append(nearest_dist)
+        within_radius_flags.append(nearest_dist <= radius_m)
+
+    # Ajouter les colonnes d'assignation au DataFrame des accidents
+    accidents['assigned_station_id'] = assigned_station_ids
+    accidents['distance_m'] = assigned_distances
+    accidents['within_radius'] = within_radius_flags
+    # 'assigned_to_deconne' indique les accidents qui étaient hors de tout cercle
+    accidents['assigned_to_deconne'] = ~accidents['within_radius']
+
+    # --- Comptage des accidents par station (seulement ceux à l'intérieur du rayon) ---
+    counts = accidents[accidents['within_radius']].groupby('assigned_station_id').size().to_dict()
+    # Si la colonne station_id existe on l'utilise pour mapper, sinon on mappe sur l'index
+    stations['accident_count_nearby'] = stations[station_id_col].map(lambda s: int(counts.get(s, 0))) if station_id_col in stations.columns else stations.index.map(lambda i: int(counts.get(i, 0)))
+
+    # --- Préparer les chemins de sortie si non précisés ---
+    if output_stations_path is None:
+        output_stations_path = os.path.join(os.path.dirname(stations_path), 'stations_with_accident_counts.csv')
+    if output_accidents_path is None:
+        output_accidents_path = os.path.join(os.path.dirname(accidents_path), 'accidents_assigned.csv')
+
+    # Créer les dossiers de sortie si nécessaire
+    os.makedirs(os.path.dirname(output_stations_path), exist_ok=True)
+    os.makedirs(os.path.dirname(output_accidents_path), exist_ok=True)
+
+    # Sauvegarder les résultats
+    stations.to_csv(output_stations_path, index=False)
+    accidents.to_csv(output_accidents_path, index=False)
+
+    # Vérification finale : combien d'accidents étaient hors rayon
+    n_outside = int((~accidents['within_radius']).sum())
+    if n_outside > 0:
+        print(f"{n_outside} accidents not within radius; assigned to nearest stations' 'deconne'.")
+    else:
+        print("Tous les accidents sont dans un cercle de rayon donné.")
+
+    print(f"Saved stations -> {output_stations_path}")
+    print(f"Saved accidents -> {output_accidents_path}")
+
+    return output_stations_path, output_accidents_path
+
+
+def _haversine_distance_m(lat1, lon1, lat2_arr, lon2_arr):
+    import numpy as np
+
+    dlat = lat2_arr - lat1
+    dlon = lon2_arr - lon1
+    a = np.sin(dlat/2.0)**2 + np.cos(lat1)*np.cos(lat2_arr)*np.sin(dlon/2.0)**2
+    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1-a))
+    R = 6371000.0  # rayon de la Terre en mètres
+    return R * c
+
+
+def save_stations_data_to_mongodb(csv_path):
+    client = MongoClient(
+        "mongodb://mongo:27017/",
+        username="admin",
+        password="admin"
+    )
+    db_name = "VelovDB"
+    collection_name = "velov_stations"
+    db = client[db_name]
+    collection = db[collection_name]
+    data = pd.read_csv(csv_path)
+    records = []
+    for _, row in data.iterrows():
+        doc = row.to_dict()
+        doc["location"] = {
+            "type": "Point",
+            "coordinates": [float(row["long"]), float(row["lat"])]
+        }
+        doc.pop("lat", None)
+        doc.pop("long", None)
+        if "accident_count_nearby" in doc:
+            doc["accident_count_nearby"] = int(doc["accident_count_nearby"])
+        records.append(doc)
+    if records:
+        collection.delete_many({})  # optionnel : reset collection
+        collection.insert_many(records)
+        print(f"Inséré {len(records)} documents dans {db_name}.{collection_name}")
+    else:
+        print("Aucun enregistrement à insérer.")
+    collection.create_index([("location", "2dsphere")])
+    print(" Index géospatial 2dsphere créé sur 'location'")
+
+    client.close()

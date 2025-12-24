@@ -1,0 +1,270 @@
+[2025-12-24T00:03:03.603+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-24T00:03:03.682+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: velov_dag.mongo_to_neo4j_graph scheduled__2025-12-23T00:00:00+00:00 [queued]>
+[2025-12-24T00:03:03.709+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: velov_dag.mongo_to_neo4j_graph scheduled__2025-12-23T00:00:00+00:00 [queued]>
+[2025-12-24T00:03:03.712+0000] {taskinstance.py:2865} INFO - Starting attempt 1 of 2
+[2025-12-24T00:03:03.757+0000] {taskinstance.py:2888} INFO - Executing <Task(PythonOperator): mongo_to_neo4j_graph> on 2025-12-23 00:00:00+00:00
+[2025-12-24T00:03:03.778+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=142) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-24T00:03:03.782+0000] {standard_task_runner.py:72} INFO - Started process 144 to run task
+[2025-12-24T00:03:03.784+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'velov_dag', 'mongo_to_neo4j_graph', 'scheduled__2025-12-23T00:00:00+00:00', '--job-id', '225', '--raw', '--subdir', 'DAGS_FOLDER/global_DAG.py', '--cfg-path', '/tmp/tmpjizxo4i1']
+[2025-12-24T00:03:03.791+0000] {standard_task_runner.py:105} INFO - Job 225: Subtask mongo_to_neo4j_graph
+[2025-12-24T00:03:03.932+0000] {task_command.py:467} INFO - Running <TaskInstance: velov_dag.mongo_to_neo4j_graph scheduled__2025-12-23T00:00:00+00:00 [running]> on host 172.18.0.4
+[2025-12-24T00:03:03.940+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/settings.py:605: DeprecationWarning: The sql_engine_encoding option in [core] has been moved to the sql_engine_encoding option in [database] - the old setting has been used, but please update your config.
+  engine_args["encoding"] = conf.get("database", "SQL_ENGINE_ENCODING", fallback="utf-8")
+
+[2025-12-24T00:03:04.192+0000] {taskinstance.py:3131} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='velov_dag' AIRFLOW_CTX_TASK_ID='mongo_to_neo4j_graph' AIRFLOW_CTX_EXECUTION_DATE='2025-12-23T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-12-23T00:00:00+00:00'
+[2025-12-24T00:03:04.195+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-12-24T00:03:04.362+0000] {taskinstance.py:3310} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/opt/airflow/dags/libs/production.py", line 83, in build_station_edges
+    from scipy.spatial import cKDTree
+ModuleNotFoundError: No module named 'scipy'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/production.py", line 123, in mongo_to_neo4j_graph
+    edges = build_station_edges(stations, k=k)    # KNN
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/production.py", line 85, in build_station_edges
+    raise ModuleNotFoundError("scipy is required to build station edges. Add 'scipy' to requirements and rebuild the Airflow image.")
+ModuleNotFoundError: scipy is required to build station edges. Add 'scipy' to requirements and rebuild the Airflow image.
+[2025-12-24T00:03:04.402+0000] {taskinstance.py:1225} INFO - Marking task as UP_FOR_RETRY. dag_id=velov_dag, task_id=mongo_to_neo4j_graph, run_id=scheduled__2025-12-23T00:00:00+00:00, execution_date=20251223T000000, start_date=20251224T000303, end_date=20251224T000304
+[2025-12-24T00:03:04.437+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-12-24T00:03:04.439+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 225 for task mongo_to_neo4j_graph (scipy is required to build station edges. Add 'scipy' to requirements and rebuild the Airflow image.; 144)
+Traceback (most recent call last):
+  File "/opt/airflow/dags/libs/production.py", line 83, in build_station_edges
+    from scipy.spatial import cKDTree
+ModuleNotFoundError: No module named 'scipy'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 115, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3004, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3158, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3182, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/production.py", line 123, in mongo_to_neo4j_graph
+    edges = build_station_edges(stations, k=k)    # KNN
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/production.py", line 85, in build_station_edges
+    raise ModuleNotFoundError("scipy is required to build station edges. Add 'scipy' to requirements and rebuild the Airflow image.")
+ModuleNotFoundError: scipy is required to build station edges. Add 'scipy' to requirements and rebuild the Airflow image.
+[2025-12-24T00:03:04.530+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-12-24T00:03:04.590+0000] {taskinstance.py:3900} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-12-24T00:03:04.595+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
+[2025-12-24T00:36:53.161+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-24T00:36:53.207+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: velov_dag.mongo_to_neo4j_graph scheduled__2025-12-23T00:00:00+00:00 [queued]>
+[2025-12-24T00:36:53.227+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: velov_dag.mongo_to_neo4j_graph scheduled__2025-12-23T00:00:00+00:00 [queued]>
+[2025-12-24T00:36:53.228+0000] {taskinstance.py:2865} INFO - Starting attempt 1 of 2
+[2025-12-24T00:36:53.264+0000] {taskinstance.py:2888} INFO - Executing <Task(PythonOperator): mongo_to_neo4j_graph> on 2025-12-23 00:00:00+00:00
+[2025-12-24T00:36:53.283+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=160) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-24T00:36:53.290+0000] {standard_task_runner.py:72} INFO - Started process 165 to run task
+[2025-12-24T00:36:53.291+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'velov_dag', 'mongo_to_neo4j_graph', 'scheduled__2025-12-23T00:00:00+00:00', '--job-id', '273', '--raw', '--subdir', 'DAGS_FOLDER/global_DAG.py', '--cfg-path', '/tmp/tmpb8b90mo2']
+[2025-12-24T00:36:53.300+0000] {standard_task_runner.py:105} INFO - Job 273: Subtask mongo_to_neo4j_graph
+[2025-12-24T00:36:53.452+0000] {task_command.py:467} INFO - Running <TaskInstance: velov_dag.mongo_to_neo4j_graph scheduled__2025-12-23T00:00:00+00:00 [running]> on host 172.18.0.13
+[2025-12-24T00:36:53.457+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/settings.py:605: DeprecationWarning: The sql_engine_encoding option in [core] has been moved to the sql_engine_encoding option in [database] - the old setting has been used, but please update your config.
+  engine_args["encoding"] = conf.get("database", "SQL_ENGINE_ENCODING", fallback="utf-8")
+
+[2025-12-24T00:36:53.593+0000] {taskinstance.py:3131} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='velov_dag' AIRFLOW_CTX_TASK_ID='mongo_to_neo4j_graph' AIRFLOW_CTX_EXECUTION_DATE='2025-12-23T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-12-23T00:00:00+00:00'
+[2025-12-24T00:36:53.596+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-12-24T00:36:53.722+0000] {production.py:93} WARNING - scipy not available; using numpy fallback KNN (slower).
+[2025-12-24T00:36:54.269+0000] {taskinstance.py:3310} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/production.py", line 178, in mongo_to_neo4j_graph
+    create_station_nodes(driver, stations)
+  File "/opt/airflow/dags/libs/production.py", line 59, in create_station_nodes
+    s.run("""
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/work/session.py", line 320, in run
+    self._auto_result._run(
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/work/result.py", line 231, in _run
+    self._attach()
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/work/result.py", line 425, in _attach
+    self._connection.fetch_message()
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_common.py", line 181, in inner
+    func(*args, **kwargs)
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_bolt.py", line 977, in fetch_message
+    res = self._process_message(tag, fields)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_bolt5.py", line 466, in _process_message
+    response.on_failure(summary_metadata or {})
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_common.py", line 251, in on_failure
+    raise Neo4jError.hydrate(**metadata)
+neo4j.exceptions.TransientError: {code: Neo.TransientError.Transaction.DeadlockDetected} {message: ForsetiClient[transactionId=32, clientId=2] can't acquire EXCLUSIVE LABEL(0) because it would form this deadlock wait cycle:
+LABEL(0)-[SHARED_OWNER]->(tx:31)-[WAITING_FOR_EXCLUSIVE]->(LABEL(0))-[SHARED_OWNER]->(tx:32)-[WAITING_FOR_EXCLUSIVE]->(LABEL(0))}
+[2025-12-24T00:36:54.304+0000] {taskinstance.py:1225} INFO - Marking task as UP_FOR_RETRY. dag_id=velov_dag, task_id=mongo_to_neo4j_graph, run_id=scheduled__2025-12-23T00:00:00+00:00, execution_date=20251223T000000, start_date=20251224T003653, end_date=20251224T003654
+[2025-12-24T00:36:54.333+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-12-24T00:36:54.334+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 273 for task mongo_to_neo4j_graph ({code: Neo.TransientError.Transaction.DeadlockDetected} {message: ForsetiClient[transactionId=32, clientId=2] can't acquire EXCLUSIVE LABEL(0) because it would form this deadlock wait cycle:
+LABEL(0)-[SHARED_OWNER]->(tx:31)-[WAITING_FOR_EXCLUSIVE]->(LABEL(0))-[SHARED_OWNER]->(tx:32)-[WAITING_FOR_EXCLUSIVE]->(LABEL(0))}; 165)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 115, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3004, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3158, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3182, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/production.py", line 178, in mongo_to_neo4j_graph
+    create_station_nodes(driver, stations)
+  File "/opt/airflow/dags/libs/production.py", line 59, in create_station_nodes
+    s.run("""
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/work/session.py", line 320, in run
+    self._auto_result._run(
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/work/result.py", line 231, in _run
+    self._attach()
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/work/result.py", line 425, in _attach
+    self._connection.fetch_message()
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_common.py", line 181, in inner
+    func(*args, **kwargs)
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_bolt.py", line 977, in fetch_message
+    res = self._process_message(tag, fields)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_bolt5.py", line 466, in _process_message
+    response.on_failure(summary_metadata or {})
+  File "/home/airflow/.local/lib/python3.12/site-packages/neo4j/_sync/io/_common.py", line 251, in on_failure
+    raise Neo4jError.hydrate(**metadata)
+neo4j.exceptions.TransientError: {code: Neo.TransientError.Transaction.DeadlockDetected} {message: ForsetiClient[transactionId=32, clientId=2] can't acquire EXCLUSIVE LABEL(0) because it would form this deadlock wait cycle:
+LABEL(0)-[SHARED_OWNER]->(tx:31)-[WAITING_FOR_EXCLUSIVE]->(LABEL(0))-[SHARED_OWNER]->(tx:32)-[WAITING_FOR_EXCLUSIVE]->(LABEL(0))}
+[2025-12-24T00:36:54.373+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-12-24T00:36:54.423+0000] {taskinstance.py:3900} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-12-24T00:36:54.426+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

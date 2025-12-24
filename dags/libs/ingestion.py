@@ -72,7 +72,7 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max
     # Écriture du CSV     
     final_data = all_data[:desired_count]
     
-    fields_names = ["station_id", "name", "address", "district", "lat", "lng", 
+    fields_names = ["station_id", "name", "address", "district", "lat", "long", 
                     "bike_stands", "available_bikes", "status", "last_update"]
 
     with open(output_path, mode='w', newline='', encoding='utf-8') as csvfile:
@@ -87,7 +87,7 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max
                 "address": properties.get('address'),
                 "district": properties.get('commune'),
                 "lat": properties.get('lat'),
-                "lng": properties.get('lng'),
+                "long": properties.get('lng'),
                 "bike_stands": properties.get('bike_stands'),
                 "available_bikes": properties.get('available_bikes'),
                 "status": properties.get('status'),
@@ -98,19 +98,4 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max
     print(f"Ingestion terminée. Fichier sauvegardé dans : {output_path}")
 
     return output_path
-
-def amadou_test_function():
-    print("Fonction de test dans ingestion.py")
-    
-
-if __name__ == "__main__":
-    fichier_test_local = "../../data/landing/velov_raw.csv"
-    
-    print("TEST manuel de la fonction d'ingestion Vélo'v...")
-    try:
-        chemin_fichier = get_velov_data(output_path=fichier_test_local, limit=10, desired_count=20)
-        print(f"TEST RÉUSSI ! Fichier créé : {chemin_fichier}")
-    except Exception as e:
-        print(f"TEST ÉCHOUÉ.")
-        print(f"Raison de l'erreur : {e}")
 

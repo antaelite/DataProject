@@ -156,12 +156,15 @@ services:
     restart: always
 
   neo4j:
-    image: neo4j
+    image: neo4j:5
     ports:
       - "7474:7474"
       - "7687:7687"
     environment:
       - NEO4J_AUTH=neo4j/adminPass
+      - NEO4JLABS_PLUGINS=["graph-data-science","apoc"]
+      - NEO4J_dbms_security_procedures_unrestricted=gds.*,apoc.*
+      - NEO4J_dbms_security_procedures_allowlist=gds.*,apoc.*
     volumes:
       - neo4j_data:/data
       - neo4j_logs:/logs
@@ -192,7 +195,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/ | grep -Eq '^(200|302)$'"]
       interval: 30s
-      timeout: 10s
+      timeout: 30s
       retries: 10
       start_period: 60s
     restart: always
@@ -207,7 +210,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
       interval: 30s
-      timeout: 10s
+      timeout: 30s
       retries: 10
       start_period: 90s
     restart: always
@@ -222,7 +225,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", 'airflow jobs check --job-type DagProcessorJob --hostname "$${HOSTNAME}"']
       interval: 30s
-      timeout: 10s
+      timeout: 30s
       retries: 5
       start_period: 30s
     restart: always
@@ -254,7 +257,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", 'airflow jobs check --job-type TriggererJob --hostname "$${HOSTNAME}"']
       interval: 30s
-      timeout: 10s
+      timeout: 30s
       retries: 5
       start_period: 30s
     restart: always
@@ -384,7 +387,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
       interval: 30s
-      timeout: 10s
+      timeout: 30s
       retries: 5
       start_period: 30s
     restart: always

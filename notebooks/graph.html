@@ -1,0 +1,250 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 650px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 650px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "2019", "label": "2019", "shape": "dot"}, {"color": "#97c2fc", "id": "2010", "label": "2010", "shape": "dot"}, {"color": "#97c2fc", "id": "2006", "label": "2006", "shape": "dot"}, {"color": "#97c2fc", "id": "2028", "label": "2028", "shape": "dot"}, {"color": "#97c2fc", "id": "2009", "label": "2009", "shape": "dot"}, {"color": "#97c2fc", "id": "2021", "label": "2021", "shape": "dot"}, {"color": "#97c2fc", "id": "5007", "label": "5007", "shape": "dot"}, {"color": "#97c2fc", "id": "5015", "label": "5015", "shape": "dot"}, {"color": "#97c2fc", "id": "2004", "label": "2004", "shape": "dot"}, {"color": "#97c2fc", "id": "2003", "label": "2003", "shape": "dot"}, {"color": "#97c2fc", "id": "2037", "label": "2037", "shape": "dot"}, {"color": "#97c2fc", "id": "5053", "label": "5053", "shape": "dot"}, {"color": "#97c2fc", "id": "2022", "label": "2022", "shape": "dot"}, {"color": "#97c2fc", "id": "9041", "label": "9041", "shape": "dot"}, {"color": "#97c2fc", "id": "32001", "label": "32001", "shape": "dot"}, {"color": "#97c2fc", "id": "30002", "label": "30002", "shape": "dot"}, {"color": "#97c2fc", "id": "9008", "label": "9008", "shape": "dot"}, {"color": "#97c2fc", "id": "9009", "label": "9009", "shape": "dot"}, {"color": "#97c2fc", "id": "28001", "label": "28001", "shape": "dot"}, {"color": "#97c2fc", "id": "6032", "label": "6032", "shape": "dot"}, {"color": "#97c2fc", "id": "6004", "label": "6004", "shape": "dot"}, {"color": "#97c2fc", "id": "6025", "label": "6025", "shape": "dot"}, {"color": "#97c2fc", "id": "6012", "label": "6012", "shape": "dot"}, {"color": "#97c2fc", "id": "6021", "label": "6021", "shape": "dot"}, {"color": "#97c2fc", "id": "6022", "label": "6022", "shape": "dot"}, {"color": "#97c2fc", "id": "7053", "label": "7053", "shape": "dot"}, {"color": "#97c2fc", "id": "7035", "label": "7035", "shape": "dot"}, {"color": "#97c2fc", "id": "7014", "label": "7014", "shape": "dot"}, {"color": "#97c2fc", "id": "7036", "label": "7036", "shape": "dot"}, {"color": "#97c2fc", "id": "7055", "label": "7055", "shape": "dot"}, {"color": "#97c2fc", "id": "7024", "label": "7024", "shape": "dot"}, {"color": "#97c2fc", "id": "10056", "label": "10056", "shape": "dot"}, {"color": "#97c2fc", "id": "10120", "label": "10120", "shape": "dot"}, {"color": "#97c2fc", "id": "10038", "label": "10038", "shape": "dot"}, {"color": "#97c2fc", "id": "10089", "label": "10089", "shape": "dot"}, {"color": "#97c2fc", "id": "10055", "label": "10055", "shape": "dot"}, {"color": "#97c2fc", "id": "10124", "label": "10124", "shape": "dot"}, {"color": "#97c2fc", "id": "10084", "label": "10084", "shape": "dot"}, {"color": "#97c2fc", "id": "10061", "label": "10061", "shape": "dot"}, {"color": "#97c2fc", "id": "22001", "label": "22001", "shape": "dot"}, {"color": "#97c2fc", "id": "5016", "label": "5016", "shape": "dot"}, {"color": "#97c2fc", "id": "5044", "label": "5044", "shape": "dot"}, {"color": "#97c2fc", "id": "5032", "label": "5032", "shape": "dot"}, {"color": "#97c2fc", "id": "5047", "label": "5047", "shape": "dot"}, {"color": "#97c2fc", "id": "5002", "label": "5002", "shape": "dot"}, {"color": "#97c2fc", "id": "5045", "label": "5045", "shape": "dot"}, {"color": "#97c2fc", "id": "9046", "label": "9046", "shape": "dot"}, {"color": "#97c2fc", "id": "9013", "label": "9013", "shape": "dot"}, {"color": "#97c2fc", "id": "9014", "label": "9014", "shape": "dot"}, {"color": "#97c2fc", "id": "11003", "label": "11003", "shape": "dot"}, {"color": "#97c2fc", "id": "26001", "label": "26001", "shape": "dot"}, {"color": "#97c2fc", "id": "9042", "label": "9042", "shape": "dot"}, {"color": "#97c2fc", "id": "4024", "label": "4024", "shape": "dot"}, {"color": "#97c2fc", "id": "10073", "label": "10073", "shape": "dot"}, {"color": "#97c2fc", "id": "10028", "label": "10028", "shape": "dot"}, {"color": "#97c2fc", "id": "10011", "label": "10011", "shape": "dot"}, {"color": "#97c2fc", "id": "10074", "label": "10074", "shape": "dot"}, {"color": "#97c2fc", "id": "10045", "label": "10045", "shape": "dot"}, {"color": "#97c2fc", "id": "10012", "label": "10012", "shape": "dot"}, {"color": "#97c2fc", "id": "10059", "label": "10059", "shape": "dot"}, {"color": "#97c2fc", "id": "10047", "label": "10047", "shape": "dot"}, {"color": "#97c2fc", "id": "8061", "label": "8061", "shape": "dot"}, {"color": "#97c2fc", "id": "15002", "label": "15002", "shape": "dot"}, {"color": "#97c2fc", "id": "8023", "label": "8023", "shape": "dot"}, {"color": "#97c2fc", "id": "15001", "label": "15001", "shape": "dot"}, {"color": "#97c2fc", "id": "17003", "label": "17003", "shape": "dot"}, {"color": "#97c2fc", "id": "8021", "label": "8021", "shape": "dot"}, {"color": "#97c2fc", "id": "6042", "label": "6042", "shape": "dot"}, {"color": "#97c2fc", "id": "10005", "label": "10005", "shape": "dot"}, {"color": "#97c2fc", "id": "10004", "label": "10004", "shape": "dot"}, {"color": "#97c2fc", "id": "10053", "label": "10053", "shape": "dot"}, {"color": "#97c2fc", "id": "6035", "label": "6035", "shape": "dot"}, {"color": "#97c2fc", "id": "6043", "label": "6043", "shape": "dot"}, {"color": "#97c2fc", "id": "4041", "label": "4041", "shape": "dot"}, {"color": "#97c2fc", "id": "4012", "label": "4012", "shape": "dot"}, {"color": "#97c2fc", "id": "6037", "label": "6037", "shape": "dot"}, {"color": "#97c2fc", "id": "4003", "label": "4003", "shape": "dot"}, {"color": "#97c2fc", "id": "6002", "label": "6002", "shape": "dot"}, {"color": "#97c2fc", "id": "4005", "label": "4005", "shape": "dot"}, {"color": "#97c2fc", "id": "11004", "label": "11004", "shape": "dot"}, {"color": "#97c2fc", "id": "8008", "label": "8008", "shape": "dot"}, {"color": "#97c2fc", "id": "16002", "label": "16002", "shape": "dot"}, {"color": "#97c2fc", "id": "7015", "label": "7015", "shape": "dot"}, {"color": "#97c2fc", "id": "16001", "label": "16001", "shape": "dot"}, {"color": "#97c2fc", "id": "17002", "label": "17002", "shape": "dot"}, {"color": "#97c2fc", "id": "7051", "label": "7051", "shape": "dot"}, {"color": "#97c2fc", "id": "3009", "label": "3009", "shape": "dot"}, {"color": "#97c2fc", "id": "3039", "label": "3039", "shape": "dot"}, {"color": "#97c2fc", "id": "7003", "label": "7003", "shape": "dot"}, {"color": "#97c2fc", "id": "3053", "label": "3053", "shape": "dot"}, {"color": "#97c2fc", "id": "8001", "label": "8001", "shape": "dot"}, {"color": "#97c2fc", "id": "555", "label": "555", "shape": "dot"}, {"color": "#97c2fc", "id": "10122", "label": "10122", "shape": "dot"}, {"color": "#97c2fc", "id": "10119", "label": "10119", "shape": "dot"}, {"color": "#97c2fc", "id": "10043", "label": "10043", "shape": "dot"}, {"color": "#97c2fc", "id": "10044", "label": "10044", "shape": "dot"}, {"color": "#97c2fc", "id": "10123", "label": "10123", "shape": "dot"}, {"color": "#97c2fc", "id": "8042", "label": "8042", "shape": "dot"}, {"color": "#97c2fc", "id": "8006", "label": "8006", "shape": "dot"}, {"color": "#97c2fc", "id": "8057", "label": "8057", "shape": "dot"}, {"color": "#97c2fc", "id": "10092", "label": "10092", "shape": "dot"}, {"color": "#97c2fc", "id": "10091", "label": "10091", "shape": "dot"}, {"color": "#97c2fc", "id": "10083", "label": "10083", "shape": "dot"}, {"color": "#97c2fc", "id": "10030", "label": "10030", "shape": "dot"}, {"color": "#97c2fc", "id": "10086", "label": "10086", "shape": "dot"}, {"color": "#97c2fc", "id": "2027", "label": "2027", "shape": "dot"}, {"color": "#97c2fc", "id": "4026", "label": "4026", "shape": "dot"}, {"color": "#97c2fc", "id": "4025", "label": "4025", "shape": "dot"}, {"color": "#97c2fc", "id": "4042", "label": "4042", "shape": "dot"}, {"color": "#97c2fc", "id": "4014", "label": "4014", "shape": "dot"}, {"color": "#97c2fc", "id": "1023", "label": "1023", "shape": "dot"}, {"color": "#97c2fc", "id": "4006", "label": "4006", "shape": "dot"}, {"color": "#97c2fc", "id": "4007", "label": "4007", "shape": "dot"}, {"color": "#97c2fc", "id": "10021", "label": "10021", "shape": "dot"}, {"color": "#97c2fc", "id": "10113", "label": "10113", "shape": "dot"}, {"color": "#97c2fc", "id": "3013", "label": "3013", "shape": "dot"}, {"color": "#97c2fc", "id": "3012", "label": "3012", "shape": "dot"}, {"color": "#97c2fc", "id": "10023", "label": "10023", "shape": "dot"}, {"color": "#97c2fc", "id": "10112", "label": "10112", "shape": "dot"}, {"color": "#97c2fc", "id": "10032", "label": "10032", "shape": "dot"}, {"color": "#97c2fc", "id": "10063", "label": "10063", "shape": "dot"}, {"color": "#97c2fc", "id": "4023", "label": "4023", "shape": "dot"}, {"color": "#97c2fc", "id": "9003", "label": "9003", "shape": "dot"}, {"color": "#97c2fc", "id": "9015", "label": "9015", "shape": "dot"}, {"color": "#97c2fc", "id": "9006", "label": "9006", "shape": "dot"}, {"color": "#97c2fc", "id": "9022", "label": "9022", "shape": "dot"}, {"color": "#97c2fc", "id": "3069", "label": "3069", "shape": "dot"}, {"color": "#97c2fc", "id": "3066", "label": "3066", "shape": "dot"}, {"color": "#97c2fc", "id": "3099", "label": "3099", "shape": "dot"}, {"color": "#97c2fc", "id": "3094", "label": "3094", "shape": "dot"}, {"color": "#97c2fc", "id": "3067", "label": "3067", "shape": "dot"}, {"color": "#97c2fc", "id": "3043", "label": "3043", "shape": "dot"}, {"color": "#97c2fc", "id": "3103", "label": "3103", "shape": "dot"}, {"color": "#97c2fc", "id": "6003", "label": "6003", "shape": "dot"}, {"color": "#97c2fc", "id": "10111", "label": "10111", "shape": "dot"}, {"color": "#97c2fc", "id": "6008", "label": "6008", "shape": "dot"}, {"color": "#97c2fc", "id": "6024", "label": "6024", "shape": "dot"}, {"color": "#97c2fc", "id": "10006", "label": "10006", "shape": "dot"}, {"color": "#97c2fc", "id": "10072", "label": "10072", "shape": "dot"}, {"color": "#97c2fc", "id": "6001", "label": "6001", "shape": "dot"}, {"color": "#97c2fc", "id": "5004", "label": "5004", "shape": "dot"}, {"color": "#97c2fc", "id": "5040", "label": "5040", "shape": "dot"}, {"color": "#97c2fc", "id": "5006", "label": "5006", "shape": "dot"}, {"color": "#97c2fc", "id": "2013", "label": "2013", "shape": "dot"}, {"color": "#97c2fc", "id": "2011", "label": "2011", "shape": "dot"}, {"color": "#97c2fc", "id": "2036", "label": "2036", "shape": "dot"}, {"color": "#97c2fc", "id": "7008", "label": "7008", "shape": "dot"}, {"color": "#97c2fc", "id": "3005", "label": "3005", "shape": "dot"}, {"color": "#97c2fc", "id": "3029", "label": "3029", "shape": "dot"}, {"color": "#97c2fc", "id": "7039", "label": "7039", "shape": "dot"}, {"color": "#97c2fc", "id": "7041", "label": "7041", "shape": "dot"}, {"color": "#97c2fc", "id": "7011", "label": "7011", "shape": "dot"}, {"color": "#97c2fc", "id": "2023", "label": "2023", "shape": "dot"}, {"color": "#97c2fc", "id": "7018", "label": "7018", "shape": "dot"}, {"color": "#97c2fc", "id": "7030", "label": "7030", "shape": "dot"}, {"color": "#97c2fc", "id": "8029", "label": "8029", "shape": "dot"}, {"color": "#97c2fc", "id": "8060", "label": "8060", "shape": "dot"}, {"color": "#97c2fc", "id": "8009", "label": "8009", "shape": "dot"}, {"color": "#97c2fc", "id": "8037", "label": "8037", "shape": "dot"}, {"color": "#97c2fc", "id": "8033", "label": "8033", "shape": "dot"}, {"color": "#97c2fc", "id": "4022", "label": "4022", "shape": "dot"}, {"color": "#97c2fc", "id": "4004", "label": "4004", "shape": "dot"}, {"color": "#97c2fc", "id": "4008", "label": "4008", "shape": "dot"}, {"color": "#97c2fc", "id": "4009", "label": "4009", "shape": "dot"}, {"color": "#97c2fc", "id": "8024", "label": "8024", "shape": "dot"}, {"color": "#97c2fc", "id": "8041", "label": "8041", "shape": "dot"}, {"color": "#97c2fc", "id": "4001", "label": "4001", "shape": "dot"}, {"color": "#97c2fc", "id": "1006", "label": "1006", "shape": "dot"}, {"color": "#97c2fc", "id": "4021", "label": "4021", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "2019", "label": "risk/km=0.63", "title": "risk/km=0.63", "to": "2010"}, {"arrows": "to", "from": "2006", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2010"}, {"arrows": "to", "from": "2028", "label": "risk/km=0.98", "title": "risk/km=0.98", "to": "2010"}, {"arrows": "to", "from": "2009", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2010"}, {"arrows": "to", "from": "2021", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2010"}, {"arrows": "to", "from": "5007", "label": "risk/km=1.61", "title": "risk/km=1.61", "to": "5015"}, {"arrows": "to", "from": "2004", "label": "risk/km=2.81", "title": "risk/km=2.81", "to": "5015"}, {"arrows": "to", "from": "2003", "label": "risk/km=1.89", "title": "risk/km=1.89", "to": "5015"}, {"arrows": "to", "from": "2037", "label": "risk/km=0.98", "title": "risk/km=0.98", "to": "5015"}, {"arrows": "to", "from": "5053", "label": "risk/km=2.03", "title": "risk/km=2.03", "to": "5015"}, {"arrows": "to", "from": "2022", "label": "risk/km=1.21", "title": "risk/km=1.21", "to": "5015"}, {"arrows": "to", "from": "9041", "label": "risk/km=0.25", "title": "risk/km=0.25", "to": "32001"}, {"arrows": "to", "from": "30002", "label": "risk/km=0.37", "title": "risk/km=0.37", "to": "32001"}, {"arrows": "to", "from": "9008", "label": "risk/km=0.37", "title": "risk/km=0.37", "to": "32001"}, {"arrows": "to", "from": "9009", "label": "risk/km=0.30", "title": "risk/km=0.30", "to": "32001"}, {"arrows": "to", "from": "28001", "label": "risk/km=1.02", "title": "risk/km=1.02", "to": "32001"}, {"arrows": "to", "from": "6032", "label": "risk/km=5.77", "title": "risk/km=5.77", "to": "6004"}, {"arrows": "to", "from": "6025", "label": "risk/km=0.94", "title": "risk/km=0.94", "to": "6004"}, {"arrows": "to", "from": "6012", "label": "risk/km=3.10", "title": "risk/km=3.10", "to": "6004"}, {"arrows": "to", "from": "6021", "label": "risk/km=2.26", "title": "risk/km=2.26", "to": "6004"}, {"arrows": "to", "from": "6022", "label": "risk/km=5.00", "title": "risk/km=5.00", "to": "6004"}, {"arrows": "to", "from": "7053", "label": "risk/km=4.41", "title": "risk/km=4.41", "to": "7035"}, {"arrows": "to", "from": "7014", "label": "risk/km=14.19", "title": "risk/km=14.19", "to": "7035"}, {"arrows": "to", "from": "7036", "label": "risk/km=4.07", "title": "risk/km=4.07", "to": "7035"}, {"arrows": "to", "from": "7055", "label": "risk/km=9.78", "title": "risk/km=9.78", "to": "7035"}, {"arrows": "to", "from": "7024", "label": "risk/km=10.42", "title": "risk/km=10.42", "to": "7035"}, {"arrows": "to", "from": "10056", "label": "risk/km=1.59", "title": "risk/km=1.59", "to": "10120"}, {"arrows": "to", "from": "10038", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10120"}, {"arrows": "to", "from": "10089", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10120"}, {"arrows": "to", "from": "10055", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10120"}, {"arrows": "to", "from": "10124", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10120"}, {"arrows": "to", "from": "10084", "label": "risk/km=0.62", "title": "risk/km=0.62", "to": "10120"}, {"arrows": "to", "from": "10061", "label": "risk/km=2.49", "title": "risk/km=2.49", "to": "10120"}, {"arrows": "to", "from": "22001", "label": "risk/km=0.67", "title": "risk/km=0.67", "to": "5016"}, {"arrows": "to", "from": "5044", "label": "risk/km=0.92", "title": "risk/km=0.92", "to": "5016"}, {"arrows": "to", "from": "5032", "label": "risk/km=0.33", "title": "risk/km=0.33", "to": "5016"}, {"arrows": "to", "from": "5007", "label": "risk/km=1.80", "title": "risk/km=1.80", "to": "5016"}, {"arrows": "to", "from": "5047", "label": "risk/km=3.01", "title": "risk/km=3.01", "to": "5016"}, {"arrows": "to", "from": "5002", "label": "risk/km=4.21", "title": "risk/km=4.21", "to": "5016"}, {"arrows": "to", "from": "5045", "label": "risk/km=0.80", "title": "risk/km=0.80", "to": "5016"}, {"arrows": "to", "from": "9046", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "9013"}, {"arrows": "to", "from": "9014", "label": "risk/km=1.46", "title": "risk/km=1.46", "to": "9013"}, {"arrows": "to", "from": "11003", "label": "risk/km=1.17", "title": "risk/km=1.17", "to": "9013"}, {"arrows": "to", "from": "26001", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "9013"}, {"arrows": "to", "from": "9042", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "9013"}, {"arrows": "to", "from": "9041", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "9013"}, {"arrows": "to", "from": "4024", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "9013"}, {"arrows": "to", "from": "10073", "label": "risk/km=0.74", "title": "risk/km=0.74", "to": "10028"}, {"arrows": "to", "from": "10011", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10028"}, {"arrows": "to", "from": "10074", "label": "risk/km=1.39", "title": "risk/km=1.39", "to": "10028"}, {"arrows": "to", "from": "10045", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10028"}, {"arrows": "to", "from": "10061", "label": "risk/km=3.82", "title": "risk/km=3.82", "to": "10028"}, {"arrows": "to", "from": "10012", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10011"}, {"arrows": "to", "from": "10028", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10011"}, {"arrows": "to", "from": "10059", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10011"}, {"arrows": "to", "from": "10074", "label": "risk/km=1.63", "title": "risk/km=1.63", "to": "10011"}, {"arrows": "to", "from": "10047", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10011"}, {"arrows": "to", "from": "8061", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "15002"}, {"arrows": "to", "from": "8023", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "15002"}, {"arrows": "to", "from": "15001", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "15002"}, {"arrows": "to", "from": "17003", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "15002"}, {"arrows": "to", "from": "8021", "label": "risk/km=0.16", "title": "risk/km=0.16", "to": "15002"}, {"arrows": "to", "from": "6042", "label": "risk/km=1.58", "title": "risk/km=1.58", "to": "10005"}, {"arrows": "to", "from": "10004", "label": "risk/km=2.29", "title": "risk/km=2.29", "to": "10005"}, {"arrows": "to", "from": "10053", "label": "risk/km=4.20", "title": "risk/km=4.20", "to": "10005"}, {"arrows": "to", "from": "6035", "label": "risk/km=1.27", "title": "risk/km=1.27", "to": "10005"}, {"arrows": "to", "from": "10038", "label": "risk/km=1.87", "title": "risk/km=1.87", "to": "10005"}, {"arrows": "to", "from": "10055", "label": "risk/km=1.54", "title": "risk/km=1.54", "to": "10005"}, {"arrows": "to", "from": "6043", "label": "risk/km=1.78", "title": "risk/km=1.78", "to": "10005"}, {"arrows": "to", "from": "4041", "label": "risk/km=1.67", "title": "risk/km=1.67", "to": "4012"}, {"arrows": "to", "from": "6037", "label": "risk/km=0.67", "title": "risk/km=0.67", "to": "4012"}, {"arrows": "to", "from": "4003", "label": "risk/km=1.97", "title": "risk/km=1.97", "to": "4012"}, {"arrows": "to", "from": "6002", "label": "risk/km=4.59", "title": "risk/km=4.59", "to": "4012"}, {"arrows": "to", "from": "4005", "label": "risk/km=0.95", "title": "risk/km=0.95", "to": "4012"}, {"arrows": "to", "from": "6025", "label": "risk/km=0.81", "title": "risk/km=0.81", "to": "4012"}, {"arrows": "to", "from": "9008", "label": "risk/km=1.56", "title": "risk/km=1.56", "to": "11004"}, {"arrows": "to", "from": "6043", "label": "risk/km=1.97", "title": "risk/km=1.97", "to": "11004"}, {"arrows": "to", "from": "6042", "label": "risk/km=1.19", "title": "risk/km=1.19", "to": "11004"}, {"arrows": "to", "from": "6035", "label": "risk/km=1.39", "title": "risk/km=1.39", "to": "11004"}, {"arrows": "to", "from": "28001", "label": "risk/km=0.44", "title": "risk/km=0.44", "to": "11004"}, {"arrows": "to", "from": "6037", "label": "risk/km=1.31", "title": "risk/km=1.31", "to": "11004"}, {"arrows": "to", "from": "8008", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "16002"}, {"arrows": "to", "from": "17003", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "16002"}, {"arrows": "to", "from": "7015", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "16002"}, {"arrows": "to", "from": "16001", "label": "risk/km=1.28", "title": "risk/km=1.28", "to": "16002"}, {"arrows": "to", "from": "17002", "label": "risk/km=0.41", "title": "risk/km=0.41", "to": "16002"}, {"arrows": "to", "from": "7051", "label": "risk/km=5.27", "title": "risk/km=5.27", "to": "3009"}, {"arrows": "to", "from": "3039", "label": "risk/km=4.90", "title": "risk/km=4.90", "to": "3009"}, {"arrows": "to", "from": "7003", "label": "risk/km=7.81", "title": "risk/km=7.81", "to": "3009"}, {"arrows": "to", "from": "3053", "label": "risk/km=9.80", "title": "risk/km=9.80", "to": "3009"}, {"arrows": "to", "from": "8001", "label": "risk/km=4.42", "title": "risk/km=4.42", "to": "3009"}, {"arrows": "to", "from": "555", "label": "risk/km=0.69", "title": "risk/km=0.69", "to": "10122"}, {"arrows": "to", "from": "10119", "label": "risk/km=0.71", "title": "risk/km=0.71", "to": "10122"}, {"arrows": "to", "from": "10043", "label": "risk/km=1.94", "title": "risk/km=1.94", "to": "10122"}, {"arrows": "to", "from": "10044", "label": "risk/km=0.74", "title": "risk/km=0.74", "to": "10122"}, {"arrows": "to", "from": "30002", "label": "risk/km=0.27", "title": "risk/km=0.27", "to": "10122"}, {"arrows": "to", "from": "10123", "label": "risk/km=0.55", "title": "risk/km=0.55", "to": "10122"}, {"arrows": "to", "from": "17002", "label": "risk/km=0.77", "title": "risk/km=0.77", "to": "16001"}, {"arrows": "to", "from": "8042", "label": "risk/km=1.61", "title": "risk/km=1.61", "to": "16001"}, {"arrows": "to", "from": "8006", "label": "risk/km=1.72", "title": "risk/km=1.72", "to": "16001"}, {"arrows": "to", "from": "16002", "label": "risk/km=1.28", "title": "risk/km=1.28", "to": "16001"}, {"arrows": "to", "from": "8008", "label": "risk/km=2.20", "title": "risk/km=2.20", "to": "16001"}, {"arrows": "to", "from": "17003", "label": "risk/km=0.51", "title": "risk/km=0.51", "to": "16001"}, {"arrows": "to", "from": "7015", "label": "risk/km=0.79", "title": "risk/km=0.79", "to": "16001"}, {"arrows": "to", "from": "8057", "label": "risk/km=4.22", "title": "risk/km=4.22", "to": "16001"}, {"arrows": "to", "from": "10092", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10091"}, {"arrows": "to", "from": "10043", "label": "risk/km=0.53", "title": "risk/km=0.53", "to": "10091"}, {"arrows": "to", "from": "10083", "label": "risk/km=1.11", "title": "risk/km=1.11", "to": "10091"}, {"arrows": "to", "from": "10044", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10091"}, {"arrows": "to", "from": "10030", "label": "risk/km=2.14", "title": "risk/km=2.14", "to": "10091"}, {"arrows": "to", "from": "10047", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10091"}, {"arrows": "to", "from": "10086", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10091"}, {"arrows": "to", "from": "2027", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2021"}, {"arrows": "to", "from": "2009", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2021"}, {"arrows": "to", "from": "2006", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2021"}, {"arrows": "to", "from": "2037", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2021"}, {"arrows": "to", "from": "2028", "label": "risk/km=1.20", "title": "risk/km=1.20", "to": "2021"}, {"arrows": "to", "from": "2010", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2021"}, {"arrows": "to", "from": "4026", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4025"}, {"arrows": "to", "from": "4042", "label": "risk/km=0.69", "title": "risk/km=0.69", "to": "4025"}, {"arrows": "to", "from": "4014", "label": "risk/km=1.65", "title": "risk/km=1.65", "to": "4025"}, {"arrows": "to", "from": "1023", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4025"}, {"arrows": "to", "from": "4006", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4025"}, {"arrows": "to", "from": "4007", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4025"}, {"arrows": "to", "from": "10021", "label": "risk/km=1.09", "title": "risk/km=1.09", "to": "10113"}, {"arrows": "to", "from": "3013", "label": "risk/km=1.72", "title": "risk/km=1.72", "to": "10113"}, {"arrows": "to", "from": "3012", "label": "risk/km=2.62", "title": "risk/km=2.62", "to": "10113"}, {"arrows": "to", "from": "10023", "label": "risk/km=0.75", "title": "risk/km=0.75", "to": "10113"}, {"arrows": "to", "from": "10112", "label": "risk/km=2.94", "title": "risk/km=2.94", "to": "10113"}, {"arrows": "to", "from": "10032", "label": "risk/km=2.97", "title": "risk/km=2.97", "to": "10113"}, {"arrows": "to", "from": "10063", "label": "risk/km=1.84", "title": "risk/km=1.84", "to": "10113"}, {"arrows": "to", "from": "4026", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4023"}, {"arrows": "to", "from": "9003", "label": "risk/km=0.99", "title": "risk/km=0.99", "to": "4023"}, {"arrows": "to", "from": "9015", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4023"}, {"arrows": "to", "from": "9014", "label": "risk/km=2.35", "title": "risk/km=2.35", "to": "4023"}, {"arrows": "to", "from": "9006", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4023"}, {"arrows": "to", "from": "9022", "label": "risk/km=1.75", "title": "risk/km=1.75", "to": "4023"}, {"arrows": "to", "from": "3069", "label": "risk/km=2.07", "title": "risk/km=2.07", "to": "3066"}, {"arrows": "to", "from": "3099", "label": "risk/km=3.00", "title": "risk/km=3.00", "to": "3066"}, {"arrows": "to", "from": "3094", "label": "risk/km=5.92", "title": "risk/km=5.92", "to": "3066"}, {"arrows": "to", "from": "3067", "label": "risk/km=9.58", "title": "risk/km=9.58", "to": "3066"}, {"arrows": "to", "from": "3043", "label": "risk/km=8.54", "title": "risk/km=8.54", "to": "3066"}, {"arrows": "to", "from": "3103", "label": "risk/km=3.14", "title": "risk/km=3.14", "to": "3066"}, {"arrows": "to", "from": "6003", "label": "risk/km=1.91", "title": "risk/km=1.91", "to": "10111"}, {"arrows": "to", "from": "6008", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10111"}, {"arrows": "to", "from": "6024", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "10111"}, {"arrows": "to", "from": "10006", "label": "risk/km=11.23", "title": "risk/km=11.23", "to": "10111"}, {"arrows": "to", "from": "10072", "label": "risk/km=2.12", "title": "risk/km=2.12", "to": "10111"}, {"arrows": "to", "from": "6001", "label": "risk/km=4.47", "title": "risk/km=4.47", "to": "10111"}, {"arrows": "to", "from": "5004", "label": "risk/km=6.81", "title": "risk/km=6.81", "to": "5040"}, {"arrows": "to", "from": "5006", "label": "risk/km=1.96", "title": "risk/km=1.96", "to": "5040"}, {"arrows": "to", "from": "5007", "label": "risk/km=1.49", "title": "risk/km=1.49", "to": "5040"}, {"arrows": "to", "from": "2013", "label": "risk/km=0.96", "title": "risk/km=0.96", "to": "5040"}, {"arrows": "to", "from": "2011", "label": "risk/km=2.40", "title": "risk/km=2.40", "to": "5040"}, {"arrows": "to", "from": "5053", "label": "risk/km=1.68", "title": "risk/km=1.68", "to": "5040"}, {"arrows": "to", "from": "2036", "label": "risk/km=6.86", "title": "risk/km=6.86", "to": "5040"}, {"arrows": "to", "from": "7014", "label": "risk/km=11.81", "title": "risk/km=11.81", "to": "7008"}, {"arrows": "to", "from": "3005", "label": "risk/km=22.97", "title": "risk/km=22.97", "to": "7008"}, {"arrows": "to", "from": "7036", "label": "risk/km=9.86", "title": "risk/km=9.86", "to": "7008"}, {"arrows": "to", "from": "3029", "label": "risk/km=12.74", "title": "risk/km=12.74", "to": "7008"}, {"arrows": "to", "from": "7039", "label": "risk/km=14.34", "title": "risk/km=14.34", "to": "7008"}, {"arrows": "to", "from": "7053", "label": "risk/km=9.65", "title": "risk/km=9.65", "to": "7008"}, {"arrows": "to", "from": "7036", "label": "risk/km=3.28", "title": "risk/km=3.28", "to": "7024"}, {"arrows": "to", "from": "7055", "label": "risk/km=22.10", "title": "risk/km=22.10", "to": "7024"}, {"arrows": "to", "from": "7041", "label": "risk/km=6.80", "title": "risk/km=6.80", "to": "7024"}, {"arrows": "to", "from": "7011", "label": "risk/km=2.66", "title": "risk/km=2.66", "to": "7024"}, {"arrows": "to", "from": "7053", "label": "risk/km=4.91", "title": "risk/km=4.91", "to": "7024"}, {"arrows": "to", "from": "7035", "label": "risk/km=10.42", "title": "risk/km=10.42", "to": "7024"}, {"arrows": "to", "from": "2037", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2023"}, {"arrows": "to", "from": "2028", "label": "risk/km=1.41", "title": "risk/km=1.41", "to": "2023"}, {"arrows": "to", "from": "2027", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2023"}, {"arrows": "to", "from": "2006", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "2023"}, {"arrows": "to", "from": "7018", "label": "risk/km=0.80", "title": "risk/km=0.80", "to": "2023"}, {"arrows": "to", "from": "7030", "label": "risk/km=0.84", "title": "risk/km=0.84", "to": "2023"}, {"arrows": "to", "from": "8006", "label": "risk/km=4.02", "title": "risk/km=4.02", "to": "8029"}, {"arrows": "to", "from": "8060", "label": "risk/km=2.11", "title": "risk/km=2.11", "to": "8029"}, {"arrows": "to", "from": "8008", "label": "risk/km=1.95", "title": "risk/km=1.95", "to": "8029"}, {"arrows": "to", "from": "8009", "label": "risk/km=3.42", "title": "risk/km=3.42", "to": "8029"}, {"arrows": "to", "from": "8042", "label": "risk/km=2.49", "title": "risk/km=2.49", "to": "8029"}, {"arrows": "to", "from": "8037", "label": "risk/km=5.97", "title": "risk/km=5.97", "to": "8029"}, {"arrows": "to", "from": "8033", "label": "risk/km=3.51", "title": "risk/km=3.51", "to": "8029"}, {"arrows": "to", "from": "4022", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4004"}, {"arrows": "to", "from": "4008", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4004"}, {"arrows": "to", "from": "4042", "label": "risk/km=0.85", "title": "risk/km=0.85", "to": "4004"}, {"arrows": "to", "from": "4003", "label": "risk/km=0.91", "title": "risk/km=0.91", "to": "4004"}, {"arrows": "to", "from": "4007", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4004"}, {"arrows": "to", "from": "4009", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "4004"}, {"arrows": "to", "from": "8060", "label": "risk/km=0.56", "title": "risk/km=0.56", "to": "8061"}, {"arrows": "to", "from": "8024", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "8061"}, {"arrows": "to", "from": "8041", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "8061"}, {"arrows": "to", "from": "8021", "label": "risk/km=1.07", "title": "risk/km=1.07", "to": "8061"}, {"arrows": "to", "from": "15002", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "8061"}, {"arrows": "to", "from": "8023", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "8061"}, {"arrows": "to", "from": "4006", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "1023"}, {"arrows": "to", "from": "4001", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "1023"}, {"arrows": "to", "from": "4025", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "1023"}, {"arrows": "to", "from": "1006", "label": "risk/km=1.04", "title": "risk/km=1.04", "to": "1023"}, {"arrows": "to", "from": "4026", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "1023"}, {"arrows": "to", "from": "4021", "label": "risk/km=0.00", "title": "risk/km=0.00", "to": "1023"}, {"arrows": "to", "from": "7039", "label": "risk/km=8.21", "title": "risk/km=8.21", "to": "7003"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
