@@ -195,7 +195,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/ | grep -Eq '^(200|302)$'"]
       interval: 30s
-      timeout: 30s
+      timeout: 60s
       retries: 10
       start_period: 60s
     restart: always
@@ -210,7 +210,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
       interval: 30s
-      timeout: 30s
+      timeout: 60s
       retries: 10
       start_period: 90s
     restart: always
@@ -225,7 +225,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", 'airflow jobs check --job-type DagProcessorJob --hostname "$${HOSTNAME}"']
       interval: 30s
-      timeout: 30s
+      timeout: 60s
       retries: 5
       start_period: 30s
     restart: always
@@ -257,7 +257,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", 'airflow jobs check --job-type TriggererJob --hostname "$${HOSTNAME}"']
       interval: 30s
-      timeout: 30s
+      timeout: 60s
       retries: 5
       start_period: 30s
     restart: always
@@ -387,7 +387,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
       interval: 30s
-      timeout: 30s
+      timeout: 60s
       retries: 5
       start_period: 30s
     restart: always

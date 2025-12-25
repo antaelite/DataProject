@@ -194,14 +194,12 @@ def check_mongo_stations(mongo_uri="mongodb://mongo:27017/", db_name="VelovDB", 
     return True
 
 
-def save_stations_data_to_mongodb(csv_path):
+def save_stations_data_to_mongodb(csv_path, db_name, collection_name):
     client = MongoClient(
         "mongodb://mongo:27017/",
         username="admin",
         password="admin"
     )
-    db_name = "VelovDB"
-    collection_name = "velov_stations"
     db = client[db_name]
     collection = db[collection_name]
     data = pd.read_csv(csv_path)
