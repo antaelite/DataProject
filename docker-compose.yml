@@ -187,7 +187,7 @@ services:
 
   airflow-apiserver:
     <<: *airflow-common
-    command: webserver
+    command: api-server
     ports:
       - "8080:8080"
     healthcheck:

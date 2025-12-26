@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.empty_operator import EmptyOperator
 
 import libs.ingestion as ingestionLib
 import libs.wrangling as wranglingLib
@@ -55,7 +55,7 @@ velov_dag = DAG(
     tags=["lyon", "velov", "etl"],
 )
 
-start = DummyOperator(
+start = EmptyOperator(
     task_id="start",
     dag =velov_dag
 )
@@ -200,7 +200,7 @@ check_mongo_stations_task = PythonOperator(
 )
 
 # 4. End
-end = DummyOperator(
+end = EmptyOperator(
     task_id="end",
     dag=velov_dag
 )
@@ -230,7 +230,7 @@ realtime_velov_dag = DAG(
     tags=["lyon", "velov", "realtime", "etl"],
 )
 
-realtime_start = DummyOperator(
+realtime_start = EmptyOperator(
     task_id="start",
     dag =realtime_velov_dag
 )
@@ -274,7 +274,7 @@ save_station_data_realtime_to_mongo_task = PythonOperator(
     },
 )
 
-realtime_end = DummyOperator(
+realtime_end = EmptyOperator(
     task_id="end",
     dag=realtime_velov_dag
 )
