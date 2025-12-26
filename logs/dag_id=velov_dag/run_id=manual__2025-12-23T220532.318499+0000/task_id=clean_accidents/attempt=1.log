@@ -1,0 +1,27 @@
+[2025-12-23T22:05:39.002+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-23T22:05:39.148+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: velov_dag.clean_accidents manual__2025-12-23T22:05:32.318499+00:00 [queued]>
+[2025-12-23T22:05:39.271+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: velov_dag.clean_accidents manual__2025-12-23T22:05:32.318499+00:00 [queued]>
+[2025-12-23T22:05:39.272+0000] {taskinstance.py:2865} INFO - Starting attempt 1 of 2
+[2025-12-23T22:05:39.485+0000] {taskinstance.py:2888} INFO - Executing <Task(PythonOperator): clean_accidents> on 2025-12-23 22:05:32.318499+00:00
+[2025-12-23T22:05:39.530+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=393) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-23T22:05:39.538+0000] {standard_task_runner.py:72} INFO - Started process 397 to run task
+[2025-12-23T22:05:39.567+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'velov_dag', 'clean_accidents', 'manual__2025-12-23T22:05:32.318499+00:00', '--job-id', '161', '--raw', '--subdir', 'DAGS_FOLDER/global_DAG.py', '--cfg-path', '/tmp/tmpz5y3p2r0']
+[2025-12-23T22:05:39.618+0000] {standard_task_runner.py:105} INFO - Job 161: Subtask clean_accidents
+[2025-12-23T22:05:40.158+0000] {task_command.py:467} INFO - Running <TaskInstance: velov_dag.clean_accidents manual__2025-12-23T22:05:32.318499+00:00 [running]> on host 172.18.0.13
+[2025-12-23T22:05:40.579+0000] {taskinstance.py:3131} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='velov_dag' AIRFLOW_CTX_TASK_ID='clean_accidents' AIRFLOW_CTX_EXECUTION_DATE='2025-12-23T22:05:32.318499+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-23T22:05:32.318499+00:00'
+[2025-12-23T22:05:40.584+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-12-23T22:05:40.653+0000] {logging_mixin.py:190} INFO - --- Traitement Accidents : /opt/***/data/landing/accidentsVelo.csv ---
+[2025-12-23T22:05:40.672+0000] {logging_mixin.py:190} INFO - Lecture du fichier brut...
+[2025-12-23T22:05:41.825+0000] {warnings.py:112} WARNING - /opt/***/dags/libs/wrangling.py:19: DtypeWarning: Columns (8,9,17,20,21,30) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(input_path)
+
+[2025-12-23T22:05:42.051+0000] {logging_mixin.py:190} INFO -  Fichier nettoyé enregistré dans : /opt/***/data/staging/accidents_clean_lyon.csv
+[2025-12-23T22:05:42.053+0000] {logging_mixin.py:190} INFO - Nombre de lignes finales : 514
+[2025-12-23T22:05:42.053+0000] {python.py:240} INFO - Done. Returned value was: None
+[2025-12-23T22:05:42.071+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-12-23T22:05:42.073+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=velov_dag, task_id=clean_accidents, run_id=manual__2025-12-23T22:05:32.318499+00:00, execution_date=20251223T220532, start_date=20251223T220539, end_date=20251223T220542
+[2025-12-23T22:05:42.155+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-12-23T22:05:42.200+0000] {taskinstance.py:3900} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-12-23T22:05:42.208+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
