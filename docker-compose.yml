@@ -76,7 +76,6 @@ x-airflow-common:
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
     - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
@@ -167,7 +166,6 @@ services:
       - NEO4J_dbms_security_procedures_allowlist=gds.*,apoc.*
     volumes:
       - neo4j_data:/data
-      - neo4j_logs:/logs
     healthcheck:
       test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "adminPass", "RETURN 1"]
       interval: 30s
@@ -319,14 +317,14 @@ services:
         echo
         echo "Creating missing opt dirs if missing:"
         echo
-        mkdir -v -p /opt/airflow/{logs,dags,plugins,config}
+        mkdir -v -p /opt/airflow/{dags,plugins,config}
         echo
         echo "Airflow version:"
         /entrypoint airflow version
         echo
         echo "Files in shared volumes:"
         echo
-        ls -la /opt/airflow/{logs,dags,plugins,config}
+        ls -la /opt/airflow/{dags,plugins,config}
         echo
         echo "Running airflow config list to create default config file if missing."
         echo
@@ -334,7 +332,7 @@ services:
         echo
         echo "Files in shared volumes:"
         echo
-        ls -la /opt/airflow/{logs,dags,plugins,config}
+        ls -la /opt/airflow/{dags,plugins,config}
         echo
         echo "Change ownership of files in /opt/airflow to ${AIRFLOW_UID}:0"
         echo
@@ -342,11 +340,11 @@ services:
         echo
         echo "Change ownership of files in shared volumes to ${AIRFLOW_UID}:0"
         echo
-        chown -v -R "${AIRFLOW_UID}:0" /opt/airflow/{logs,dags,plugins,config,data}
+        chown -v -R "${AIRFLOW_UID}:0" /opt/airflow/{dags,plugins,config,data}
         echo
         echo "Files in shared volumes:"
         echo
-        ls -la /opt/airflow/{logs,dags,plugins,config,data}
+        ls -la /opt/airflow/{dags,plugins,config,data}
 
     # yamllint enable rule:line-length
     environment:
@@ -409,5 +407,4 @@ volumes:
   DataengProjet_MONGO_DATA:
   DataengProjet_MONGO_CONFIG:
   neo4j_data:
-  neo4j_logs:
   postgres-db-volume:
