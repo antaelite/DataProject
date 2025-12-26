@@ -10,3 +10,5 @@ pyneo==0.2.0
 py2neo==2021.2.4
 apache-airflow-providers-postgres==6.3.0
 requests==2.31.0
+numpy==1.26.4
+scipy==1.11.3

@@ -1,0 +1,159 @@
+[2025-12-23T20:05:06.666+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-12-23T20:05:06.688+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: velov_dag.ingest_velov_data manual__2025-12-23T20:03:55.937362+00:00 [queued]>
+[2025-12-23T20:05:06.700+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: velov_dag.ingest_velov_data manual__2025-12-23T20:03:55.937362+00:00 [queued]>
+[2025-12-23T20:05:06.701+0000] {taskinstance.py:2865} INFO - Starting attempt 2 of 2
+[2025-12-23T20:05:06.725+0000] {taskinstance.py:2888} INFO - Executing <Task(PythonOperator): ingest_velov_data> on 2025-12-23 20:03:55.937362+00:00
+[2025-12-23T20:05:06.735+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=157) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-12-23T20:05:06.737+0000] {standard_task_runner.py:72} INFO - Started process 159 to run task
+[2025-12-23T20:05:06.738+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'velov_dag', 'ingest_velov_data', 'manual__2025-12-23T20:03:55.937362+00:00', '--job-id', '76', '--raw', '--subdir', 'DAGS_FOLDER/global_DAG.py', '--cfg-path', '/tmp/tmptltvmldz']
+[2025-12-23T20:05:06.741+0000] {standard_task_runner.py:105} INFO - Job 76: Subtask ingest_velov_data
+[2025-12-23T20:05:06.824+0000] {task_command.py:467} INFO - Running <TaskInstance: velov_dag.ingest_velov_data manual__2025-12-23T20:03:55.937362+00:00 [running]> on host 172.18.0.13
+[2025-12-23T20:05:07.261+0000] {taskinstance.py:3131} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='velov_dag' AIRFLOW_CTX_TASK_ID='ingest_velov_data' AIRFLOW_CTX_EXECUTION_DATE='2025-12-23T20:03:55.937362+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-23T20:03:55.937362+00:00'
+[2025-12-23T20:05:07.263+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-12-23T20:05:07.284+0000] {logging_mixin.py:190} INFO - Début de l'ingestion vers le fichier : /opt/***/data/landing/velov_raw.csv...
+[2025-12-23T20:05:07.285+0000] {logging_mixin.py:190} INFO - URL cible : https://data.grandlyon.com/geoserver/ogc/features/v1/collections/metropole-de-lyon:jcd_jcdecaux.jcdvelov/items
+[2025-12-23T20:05:07.484+0000] {logging_mixin.py:190} INFO - Récupéré : 100 stations...
+[2025-12-23T20:05:08.126+0000] {logging_mixin.py:190} INFO - Récupéré : 200 stations...
+[2025-12-23T20:05:08.860+0000] {logging_mixin.py:190} INFO - Récupéré : 300 stations...
+[2025-12-23T20:05:09.383+0000] {taskinstance.py:3310} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/ingestion.py", line 96, in get_velov_data
+    writer.writerow(row)
+  File "/usr/local/lib/python3.12/csv.py", line 164, in writerow
+    return self.writer.writerow(self._dict_to_list(rowdict))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/csv.py", line 159, in _dict_to_list
+    raise ValueError("dict contains fields not in fieldnames: "
+ValueError: dict contains fields not in fieldnames: 'lng'
+[2025-12-23T20:05:09.463+0000] {taskinstance.py:1225} INFO - Marking task as FAILED. dag_id=velov_dag, task_id=ingest_velov_data, run_id=manual__2025-12-23T20:03:55.937362+00:00, execution_date=20251223T200355, start_date=20251223T200506, end_date=20251223T200509
+[2025-12-23T20:05:09.470+0000] {taskinstance.py:1563} INFO - Executing callback at index 0: failure_alert
+[2025-12-23T20:05:09.473+0000] {global_DAG.py:29} ERROR - Task FAILED: dag=velov_dag task=ingest_velov_data run_id=manual__2025-12-23T20:03:55.937362+00:00 try=2
+[2025-12-23T20:05:09.475+0000] {global_DAG.py:36} ERROR - dict contains fields not in fieldnames: 'lng'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3158, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3182, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/ingestion.py", line 96, in get_velov_data
+    writer.writerow(row)
+  File "/usr/local/lib/python3.12/csv.py", line 164, in writerow
+    return self.writer.writerow(self._dict_to_list(rowdict))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/csv.py", line 159, in _dict_to_list
+    raise ValueError("dict contains fields not in fieldnames: "
+ValueError: dict contains fields not in fieldnames: 'lng'
+[2025-12-23T20:05:09.544+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-12-23T20:05:09.550+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 76 for task ingest_velov_data (dict contains fields not in fieldnames: 'lng'; 159)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 115, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3004, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3158, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3182, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 406, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 238, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 256, in execute_callable
+    return runner.run(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/libs/ingestion.py", line 96, in get_velov_data
+    writer.writerow(row)
+  File "/usr/local/lib/python3.12/csv.py", line 164, in writerow
+    return self.writer.writerow(self._dict_to_list(rowdict))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/csv.py", line 159, in _dict_to_list
+    raise ValueError("dict contains fields not in fieldnames: "
+ValueError: dict contains fields not in fieldnames: 'lng'
+[2025-12-23T20:05:09.658+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-12-23T20:05:09.759+0000] {taskinstance.py:3900} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-12-23T20:05:09.784+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
