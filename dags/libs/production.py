@@ -162,7 +162,15 @@ def build_station_edges(stations_df, k=5, directed=True):
             for j in neighbor_idxs:
                 b = stations_df.iloc[int(j)]
 
-                distance_m = wranglingLib._haversine_distance_m(math.radians(a["lat"]), math.radians(a["long"]), np.radians(b["lat"]), np.radians(b["long"]))
+                lat1 = math.radians(a["lat"])
+                lon1 = math.radians(a["long"])
+                lat2 = math.radians(b["lat"])
+                lon2 = math.radians(b["long"])
+                dlat = lat2 - lat1
+                dlon = lon2 - lon1
+                a_val = math.sin(dlat / 2.0) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2.0) ** 2
+                c = 2 * math.atan2(math.sqrt(a_val), math.sqrt(1 - a_val))
+                distance_m = 6371000.0 * c
                 risk = (float(a.get("accident_count_nearby", 0)) + float(b.get("accident_count_nearby", 0))) / 2.0
                 risk_per_km = risk / max(distance_m / 1000.0, 1e-6)
 
@@ -184,7 +192,6 @@ def build_station_edges(stations_df, k=5, directed=True):
                     })
 
     else:
-        import math
         for i, a in stations_df.iterrows():
             lat1 = math.radians(a["lat"])
             lon1 = math.radians(a["long"])
