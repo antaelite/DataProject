@@ -1,0 +1,75 @@
+[2025-12-26T17:17:37.420+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-26T17:17:37.421+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-26T17:17:37.425+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-26T17:17:37.426+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-26T17:17:37.651+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-26T17:17:37.858+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                              PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+-----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/global_DAG.py         83  0.06s             0           0                                                   0
+/opt/airflow/dags/libs/ingestion.py     82  0.11s             0           0                                                   0
+================================================================================
+[2025-12-26T17:17:40.440+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-26T17:18:04.360+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-26T17:18:04.361+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-26T17:18:04.362+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-26T17:18:04.362+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-26T17:18:04.456+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-26T17:18:04.579+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                              PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+-----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/global_DAG.py         64  0.04s             0           0                                                   0
+/opt/airflow/dags/libs/ingestion.py     63  0.07s             0           0                                                   0
+================================================================================
+[2025-12-26T17:18:05.834+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-26T17:18:33.733+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-26T17:18:33.734+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-26T17:18:33.735+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-26T17:18:33.735+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-26T17:18:33.836+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-26T17:18:33.966+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                              PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+-----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/global_DAG.py         66  0.03s             0           0                                                   0
+/opt/airflow/dags/libs/ingestion.py     65  0.07s             0           0                                                   0
+================================================================================
+[2025-12-26T17:18:35.235+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-26T17:19:03.620+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-26T17:19:03.621+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-26T17:19:03.621+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-26T17:19:03.622+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-26T17:19:03.723+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-26T17:19:03.846+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                              PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+-----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/global_DAG.py         72  0.04s             0           0                                                   0
+/opt/airflow/dags/libs/ingestion.py     71  0.06s             0           0                                                   0
+================================================================================
+[2025-12-26T17:19:05.129+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-12-26T17:19:35.359+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-12-26T17:19:35.360+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-12-26T17:19:35.361+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-12-26T17:19:35.362+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-12-26T17:19:35.490+0000] {manager.py:824} INFO - There are 2 files in /opt/airflow/dags
+[2025-12-26T17:19:35.613+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                              PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+-----------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/global_DAG.py         72  0.03s             0           0                                                   0
+/opt/airflow/dags/libs/ingestion.py     71  0.06s             0           0                                                   0
+================================================================================
+[2025-12-26T17:19:36.940+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15

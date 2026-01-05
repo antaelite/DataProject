@@ -169,7 +169,7 @@ services:
     healthcheck:
       test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "adminPass", "RETURN 1"]
       interval: 30s
-      timeout: 10s
+      timeout: 60s
       retries: 5
     restart: always
 
@@ -345,6 +345,17 @@ services:
         echo "Files in shared volumes:"
         echo
         ls -la /opt/airflow/{dags,plugins,config,data}
+        echo "Migrating DB..."
+        /entrypoint airflow db migrate
+
+        echo "Creating admin user (if needed)..."
+        /entrypoint airflow users create \
+          --username "${_AIRFLOW_WWW_USER_USERNAME:-airflow}" \
+          --password "${_AIRFLOW_WWW_USER_PASSWORD:-airflow}" \
+          --firstname Airflow \
+          --lastname Admin \
+          --role Admin \
+          --email admin@example.com || true
 
     # yamllint enable rule:line-length
     environment:

@@ -10,6 +10,7 @@ import libs.wrangling as wranglingLib
 
 
 def mongo_to_neo4j_graph(k=5):
+<<<<<<< HEAD
     """
     Build Neo4j graph from MongoDB station data with KNN edges.
 
@@ -21,11 +22,25 @@ def mongo_to_neo4j_graph(k=5):
     """
     stations = load_stations_from_mongo()        
     edges = build_station_edges(stations, k=k)    
+=======
+    stations = load_stations_from_mongo()         # depuis Mongo
+    if stations.empty:
+        raise ValueError("No stations loaded from MongoDB; aborting Neo4j import.")
+
+    edges = build_station_edges(stations, k=k)    # KNN
+>>>>>>> 4a6da65 (second dag)
 
     driver = connect_neo4j()
-    create_station_nodes(driver, stations)
-    create_routes(driver, edges)
-    close_neo4j(driver)
+    try:
+        created_nodes = create_station_nodes(driver, stations)
+        if created_nodes == 0:
+            raise ValueError("No Station nodes were created in Neo4j; aborting.")
+
+        created_edges = create_routes(driver, edges)
+        if created_edges == 0:
+            logging.getLogger(__name__).warning("No ROUTE relationships were created in Neo4j.")
+    finally:
+        close_neo4j(driver)
 
     return len(stations), len(edges)
 
@@ -49,14 +64,46 @@ def load_stations_from_mongo(
 
     df = pd.DataFrame(docs)
 
+<<<<<<< HEAD
+=======
+    # Normaliser noms de colonnes potentiels
+    if "station_id" not in df.columns:
+        for alt in ["station", "id", "stationId"]:
+            if alt in df.columns:
+                df = df.rename(columns={alt: "station_id"})
+                break
+
+    # Extraire lat/long depuis GeoJSON location si besoin
+>>>>>>> 4a6da65 (second dag)
     if "location" in df.columns:
         df["long"] = df["location"].apply(lambda x: float(x["coordinates"][0]) if x else None)
         df["lat"]  = df["location"].apply(lambda x: float(x["coordinates"][1]) if x else None)
 
+<<<<<<< HEAD
+=======
+    # Accepter aussi 'lng' ou 'lon' comme noms alternatifs
+    if "long" not in df.columns and "lng" in df.columns:
+        df["long"] = df["lng"]
+    if "long" not in df.columns and "lon" in df.columns:
+        df["long"] = df["lon"]
+
+    # Coercer types
+    df["lat"] = pd.to_numeric(df.get("lat"), errors="coerce")
+    df["long"] = pd.to_numeric(df.get("long"), errors="coerce")
+
+    # Sécuriser les colonnes attendues
+>>>>>>> 4a6da65 (second dag)
     if "accident_count_nearby" not in df.columns:
         df["accident_count_nearby"] = 0
 
+    # Vérifier présence de station_id
+    if "station_id" not in df.columns:
+        raise ValueError("Les documents Mongo doivent contenir la clé 'station_id'.")
+
     df = df.dropna(subset=["lat", "long"]).reset_index(drop=True)
+
+    # Debug: logger info
+    logging.getLogger(__name__).info(f"Loaded {len(df)} stations from {db_name}.{collection_name}")
     return df
 
 

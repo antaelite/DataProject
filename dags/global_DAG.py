@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from airflow.operators.empty_operator import EmptyOperator
+from airflow.operators.empty import EmptyOperator
 
 import libs.ingestion as ingestionLib
 import libs.wrangling as wranglingLib
