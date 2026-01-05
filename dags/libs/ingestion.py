@@ -3,33 +3,32 @@ import csv
 import os
 import time
 
+
 def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max_loops=100, sleep_seconds=0.5):
     """
-    Fetch Vélo'v bike station data and save it to a specific CSV path.
+    Fetch Vélo'v bike station data from Grand Lyon API and save to CSV.
+
     Args:
-        output_path (str): Chemin complet du fichier de sortie (ex: /data/landing/file.csv)
-        api_url (str): URL de l'API (optionnel, sinon utilise la valeur par défaut)
-        limit (int): Pagination
-        desired_count (int): Nombre max d'éléments à récupérer
-        max_loops (int): Safeguard to avoid infinite pagination loops
-        sleep_seconds (float): Wait between paged requests to avoid rate limits
+        output_path: Full path to the output CSV file.
+        api_url: API endpoint URL (uses default Grand Lyon API if None).
+        limit: Number of items per API request.
+        desired_count: Maximum number of stations to fetch.
+        max_loops: Maximum pagination iterations.
+        sleep_seconds: Delay between paginated requests.
+
+    Returns:
+        str: Path to the saved CSV file.
     """
     output_folder = os.path.dirname(output_path)
-    if output_folder: # Si le chemin n'est pas juste "velov.csv"
+    if output_folder:
         os.makedirs(output_folder, exist_ok=True)
 
-    #Configuration de l'API
     if api_url is None:
         api_url = "https://data.grandlyon.com/geoserver/ogc/features/v1/collections/metropole-de-lyon:jcd_jcdecaux.jcdvelov/items"
     
     all_data = []
     start_index = 0
     loops = 0
-
-    print(f"Début de l'ingestion vers le fichier : {output_path}...")
-    print(f"URL cible : {api_url}")
-
-    # Boucle de pagination
     while len(all_data) < desired_count and loops < max_loops:
         params = {
             "limit": limit,
@@ -41,35 +40,21 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max
             response.raise_for_status()
             data = response.json()
         except requests.exceptions.RequestException as e:
-            print(f"Erreur réseau/API : {e}")
-            # Propagate so Airflow marks the task as failed and retries according to DAG config
             raise
         except ValueError as e:
-            print(f"Réponse non JSON ou décodage échoué : {e}")
             raise
-
         items = data.get('features', [])
-
         if not items:
-            print("Aucun item renvoyé par l'API, arrêt de la boucle.")
             break
 
         all_data.extend(items)
-        print(f"Récupéré : {len(all_data)} stations...")
-        
         if len(items) < limit:
-            print("Fin des pages disponibles.")
             break
 
         start_index += limit
         loops += 1
         if sleep_seconds:
-            time.sleep(sleep_seconds)
-
-    if loops >= max_loops:
-        print("Arrêt: nombre max d'itérations atteint (max_loops)")
-
-    # Écriture du CSV     
+            time.sleep(sleep_seconds)   
     final_data = all_data[:desired_count]
     
     fields_names = ["station_id", "name", "address", "district", "lat", "long", 
@@ -94,8 +79,6 @@ def get_velov_data(output_path, api_url=None, limit=100, desired_count=2000, max
                 "last_update": properties.get('last_update')
             }
             writer.writerow(row)
-    
-    print(f"Ingestion terminée. Fichier sauvegardé dans : {output_path}")
 
     return output_path
 

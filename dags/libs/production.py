@@ -1,16 +1,26 @@
 import numpy as np
 import pandas as pd
 import math
+import logging
 
 from neo4j import GraphDatabase
 from pymongo import MongoClient
-import logging
 
 import libs.wrangling as wranglingLib
 
+
 def mongo_to_neo4j_graph(k=5):
-    stations = load_stations_from_mongo()         # depuis Mongo
-    edges = build_station_edges(stations, k=k)    # KNN
+    """
+    Build Neo4j graph from MongoDB station data with KNN edges.
+
+    Args:
+        k: Number of nearest neighbors for edge creation.
+
+    Returns:
+        tuple: (station_count, edge_count)
+    """
+    stations = load_stations_from_mongo()        
+    edges = build_station_edges(stations, k=k)    
 
     driver = connect_neo4j()
     create_station_nodes(driver, stations)
@@ -27,23 +37,22 @@ def load_stations_from_mongo(
     db_name="VelovDB",
     collection_name="velov_stations"
 ) -> pd.DataFrame:
+    """Load station data from MongoDB into a DataFrame."""
     client = MongoClient(mongo_uri, username=username, password=password, authSource="admin")
     col = client[db_name][collection_name]
 
-    docs = list(col.find({}, {"_id": 0}))  # on enlève _id
+    docs = list(col.find({}, {"_id": 0}))
     client.close()
 
     if not docs:
-        raise ValueError(f"Aucun document trouvé dans {db_name}.{collection_name}")
+        raise ValueError(f"No documents found in {db_name}.{collection_name}")
 
     df = pd.DataFrame(docs)
 
-    # Extraire lat/long depuis GeoJSON location si besoin
     if "location" in df.columns:
         df["long"] = df["location"].apply(lambda x: float(x["coordinates"][0]) if x else None)
         df["lat"]  = df["location"].apply(lambda x: float(x["coordinates"][1]) if x else None)
 
-    # Sécuriser les colonnes attendues
     if "accident_count_nearby" not in df.columns:
         df["accident_count_nearby"] = 0
 
@@ -52,17 +61,24 @@ def load_stations_from_mongo(
 
 
 def connect_neo4j(uri="bolt://neo4j:7687", user="neo4j", pwd="adminPass"):
+    """Create and return a Neo4j driver connection."""
     return GraphDatabase.driver(uri, auth=(user, pwd))
 
+
 def close_neo4j(driver):
+    """Close Neo4j driver connection."""
     driver.close()
-    
+
+
 def run_query(driver, query, parameters=None):
+    """Execute a Cypher query and return results as list of dicts."""
     with driver.session() as session:
         result = session.run(query, parameters)
         return result.data()
 
+
 def create_station_nodes(driver, stations_df):
+    """Create or update Station nodes in Neo4j from DataFrame."""
     rows = [{
         "station_id": r["station_id"],
         "lat": float(r["lat"]),
@@ -81,7 +97,9 @@ def create_station_nodes(driver, stations_df):
         SET s.lat=row.lat, s.lng=row.lng, s.accidents=row.accidents
         """, rows=rows)
 
+
 def create_routes(driver, edges):
+    """Create ROUTE relationships between Station nodes in Neo4j."""
     with driver.session() as s:
         s.run("""
         UNWIND $edges AS e
@@ -94,17 +112,23 @@ def create_routes(driver, edges):
         """, edges=edges)
    
 def build_station_edges(stations_df, k=5, directed=True):
-    """Build KNN edges between stations.
+    """
+    Build KNN edges between stations using haversine distance.
 
-    Uses SciPy cKDTree if available for speed; otherwise falls back to a NumPy
-    brute-force nearest-neighbor using the haversine distance (slower but safe).
+    Args:
+        stations_df: DataFrame with station data including lat/long.
+        k: Number of nearest neighbors per station.
+        directed: If True, create bidirectional edges.
+
+    Returns:
+        list: Edge dictionaries with source, target, distance_m, risk, risk_per_km.
     """
     use_ckdtree = False
     try:
         from scipy.spatial import cKDTree
         use_ckdtree = True
     except ModuleNotFoundError:
-        logging.getLogger(__name__).warning("scipy not available; using numpy fallback KNN (slower).")
+        logging.getLogger(__name__).warning("scipy not available; using numpy fallback KNN.")
 
     coords = np.column_stack([stations_df["lat"].to_numpy(), stations_df["long"].to_numpy()])
     edges = []
@@ -112,20 +136,18 @@ def build_station_edges(stations_df, k=5, directed=True):
     if n == 0:
         return edges
 
-    # Precompute radians arrays for haversine distance
     lat_rads = np.radians(stations_df["lat"].to_numpy())
     lon_rads = np.radians(stations_df["long"].to_numpy())
 
     if use_ckdtree:
         tree = cKDTree(coords)
         for i, a in stations_df.iterrows():
-            _, idxs = tree.query(coords[i], k=min(k + 1, n))  # k+1 to include self
+            _, idxs = tree.query(coords[i], k=min(k + 1, n))  
             neighbor_idxs = idxs[1:] if len(idxs) > 1 else []
 
             for j in neighbor_idxs:
                 b = stations_df.iloc[int(j)]
 
-                # compute haversine distance using radians for accuracy
                 distance_m = wranglingLib._haversine_distance_m(math.radians(a["lat"]), math.radians(a["long"]), np.radians(b["lat"]), np.radians(b["long"]))
                 risk = (float(a.get("accident_count_nearby", 0)) + float(b.get("accident_count_nearby", 0))) / 2.0
                 risk_per_km = risk / max(distance_m / 1000.0, 1e-6)
@@ -148,7 +170,6 @@ def build_station_edges(stations_df, k=5, directed=True):
                     })
 
     else:
-        # Fallback: brute-force KNN using haversine distances (vectorized)
         import math
         for i, a in stations_df.iterrows():
             lat1 = math.radians(a["lat"])
@@ -185,8 +206,10 @@ def build_station_edges(stations_df, k=5, directed=True):
 
 def check_neo4j_graph(driver_uri="bolt://neo4j:7687", user="neo4j", pwd="adminPass", min_nodes=1, min_edges=1):
     """
-    Vérifie qu'il y a au moins `min_nodes` noeuds :Station et `min_edges` relations :ROUTE.
-    Lève une exception si condition non satisfaite pour que la task Airflow échoue.
+    Validate Neo4j graph has minimum Station nodes and ROUTE relationships.
+
+    Raises:
+        ValueError: If node or edge count is below minimum.
     """
     driver = connect_neo4j(uri=driver_uri, user=user, pwd=pwd)
     try:
@@ -203,10 +226,10 @@ def check_neo4j_graph(driver_uri="bolt://neo4j:7687", user="neo4j", pwd="adminPa
     if edges < min_edges:
         raise ValueError(f"Neo4j contains {edges} ROUTE relationships < {min_edges}")
 
-    print(f"OK: Neo4j has {nodes} Station nodes and {edges} ROUTE relations")
     return {"nodes": nodes, "edges": edges}
 
 
 def clear_database(driver):
+    """Delete all nodes and relationships from Neo4j database."""
     with driver.session() as s:
         s.run("MATCH (n) DETACH DELETE n")

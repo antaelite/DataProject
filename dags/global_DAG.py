@@ -18,13 +18,12 @@ START_DATE = pendulum.datetime(2025, 11, 1, tz="Europe/Paris")
 VELOV_API_URL = "https://data.grandlyon.com/geoserver/ogc/features/v1/collections/metropole-de-lyon:jcd_jcdecaux.jcdvelov/items"
 ACCIDENTS_API_URL = "https://www.dnd5eapi.co/api"
 
-# Chemins de fichiers 
 BASE_DIR = "/opt/airflow/data"
 RAW_FILE_PATH = os.path.join(BASE_DIR, "landing", "velov_raw.csv")
 RAW_FILE_PATH_REALTIME = os.path.join(BASE_DIR, "landing", "velov_raw_realtime.csv")
 CLEAN_FILE_PATH = os.path.join(BASE_DIR, "staging", "velov_clean.csv")
 
-# --- Failure callback ---
+
 def failure_alert(context):
     exc = context.get("exception")
     ti = context.get("ti")
@@ -38,14 +37,14 @@ def failure_alert(context):
     logger.exception(exc)
 
 default_args_dict = {
-    'owner' : "airflow",
-    'start_date' : START_DATE,
-    'concurrency' : 1,
-    'retries' : 1,
-    'retry_delay' : timedelta(minutes=1),
+    'owner': "airflow",
+    'start_date': START_DATE,
+    'concurrency': 1,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=1),
     'on_failure_callback': failure_alert,
 }
-# --- DAG DEFINITION ---
+
 velov_dag = DAG(
     dag_id="velov_dag",
     schedule=None,
@@ -65,11 +64,11 @@ ingest_velov_station_data_task = PythonOperator(
     dag = velov_dag,
     python_callable=ingestionLib.get_velov_data,
     op_kwargs={
-        "api_url": VELOV_API_URL, 
-        "output_path": RAW_FILE_PATH, # <-- On force le chemin ici
+        "api_url": VELOV_API_URL,
+        "output_path": RAW_FILE_PATH,
         "limit": 100,
-        "desired_count": 300,  # Limite par défaut pour éviter de longues exécutions
-        "max_loops": 50        # Safeguard pour arrêter pagination excessive
+        "desired_count": 300,
+        "max_loops": 50
     },
 )
 
@@ -78,8 +77,8 @@ cleaning_velov_station_task = PythonOperator(
     dag = velov_dag,
     python_callable=wranglingLib.clean_velov_data,
     op_kwargs={
-        "input_path": RAW_FILE_PATH,   
-        "output_path": CLEAN_FILE_PATH 
+        "input_path": RAW_FILE_PATH,
+        "output_path": CLEAN_FILE_PATH
     },
 )
 
@@ -93,8 +92,6 @@ cleaning_accidents_data = PythonOperator(
     },
 )
 
-# --- ORCHESTRATION (PIPELINE) ---
-# Validation tasks (ingestion & wrangling)
 check_ingestion_task = PythonOperator(
     task_id="check_ingestion",
     dag=velov_dag,
@@ -116,7 +113,6 @@ check_accidents_task = PythonOperator(
     op_kwargs={"path": os.path.join(BASE_DIR, "staging", "accidents_clean_lyon.csv"), "min_rows": 1, "required_cols": ["Num_Acc", "lat", "long"]},
 )
 
-# Assign accidents to stations (requires both clean station & accidents files)
 assign_accidents_task = PythonOperator(
     task_id="assign_accidents_to_stations",
     dag=velov_dag,
@@ -169,7 +165,6 @@ check_accidents_input_task = PythonOperator(
     },
 )
 
-# Verification tasks for assignment outputs
 check_assigned_stations_task = PythonOperator(
     task_id="check_assigned_stations",
     dag=velov_dag,
@@ -192,14 +187,12 @@ check_assigned_accidents_task = PythonOperator(
     },
 )
 
-# Verify Mongo insert before building Neo4j graph
 check_mongo_stations_task = PythonOperator(
     task_id="check_mongo_stations",
     dag=velov_dag,
     python_callable=wranglingLib.check_mongo_stations,
 )
 
-# 4. End
 end = EmptyOperator(
     task_id="end",
     dag=velov_dag
@@ -209,11 +202,9 @@ end = EmptyOperator(
 start >> ingest_velov_station_data_task >> check_ingestion_task >> cleaning_velov_station_task >> check_wrangling_task
 start >> check_accidents_input_task >> cleaning_accidents_data >> check_accidents_task
 
-# Run assignment after both checks are done
 check_wrangling_task >> assign_accidents_task
 check_accidents_task >> assign_accidents_task
 
-# Ensure assignment produced expected CSVs before saving to Mongo
 assign_accidents_task >> check_assigned_stations_task
 assign_accidents_task >> check_assigned_accidents_task
 check_assigned_stations_task >> save_station_data_to_mongo_task
@@ -224,8 +215,8 @@ save_station_data_to_mongo_task >> check_mongo_stations_task >> mongo_to_neo4j_g
 realtime_velov_dag = DAG(
     dag_id="realtime_velov_dag",
     catchup=False,
-    schedule='*/15 * * * *',  # Toutes les 15 minutes
-    default_args= default_args_dict,
+    schedule='*/15 * * * *',
+    default_args=default_args_dict,
     template_searchpath=[BASE_DIR],
     tags=["lyon", "velov", "realtime", "etl"],
 )
@@ -239,14 +230,14 @@ date = "{{ data_interval_start.strftime('%Y%m%d_%H%M') }}"
 
 ingest_velov_station_data_realtime_task = PythonOperator(
     task_id="ingest_velov_data",
-    dag = realtime_velov_dag,
+    dag=realtime_velov_dag,
     python_callable=ingestionLib.get_velov_data,
     op_kwargs={
-        "api_url": VELOV_API_URL, 
-        "output_path": RAW_FILE_PATH_REALTIME, # <-- On force le chemin ici
+        "api_url": VELOV_API_URL,
+        "output_path": RAW_FILE_PATH_REALTIME,
         "limit": 100,
-        "desired_count": 300,  # Limite par défaut pour éviter de longues exécutions
-        "max_loops": 50        # Safeguard pour arrêter pagination excessive
+        "desired_count": 300,
+        "max_loops": 50
     },
 )
 cleaning_velov_station_realtime_task = PythonOperator(
